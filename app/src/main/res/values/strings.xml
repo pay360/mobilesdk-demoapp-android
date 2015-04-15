@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">PayPointSDKDemo</string>
+    <string name="app_name">PayPoint SDK Demo</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="activity_payment_title">Payment</string>
+
+    <string name="payment_card_number">Card Number</string>
+    <string name="payment_expiry">Expiry</string>
+    <string name="payment_cvc">CVV</string>
+    <string name="payment_button_text">Pay Now</string>
+
 </resources>
