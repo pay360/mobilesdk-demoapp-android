@@ -20,14 +20,19 @@ import com.paypoint.sdk.library.exception.CardInvalidCv2Exception;
 import com.paypoint.sdk.library.exception.CardInvalidExpiryException;
 import com.paypoint.sdk.library.exception.CardInvalidLuhnException;
 import com.paypoint.sdk.library.exception.CardInvalidPanException;
+import com.paypoint.sdk.library.exception.CredentialMissingException;
 import com.paypoint.sdk.library.exception.NoNetworkException;
 import com.paypoint.sdk.library.exception.TransactionInvalidAmountException;
 import com.paypoint.sdk.library.exception.TransactionInvalidCurrencyException;
+import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
+import com.paypoint.sdk.library.payment.request.BillingAddress;
 import com.paypoint.sdk.library.payment.request.PaymentCard;
 import com.paypoint.sdk.library.payment.request.Transaction;
 import com.paypoint.sdk.library.security.PayPointCredentials;
+
+import java.util.UUID;
 
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback {
 
@@ -50,6 +55,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         editCardCvv = (EditText)findViewById(R.id.editCardCVV);
         buttonPay = (Button)findViewById(R.id.buttonPay);
 
+        editCardNumber.addTextChangedListener(new CardNumberFormatter());
+
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,19 +71,43 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         String cardExpiry = editCardExpiry.getText().toString();
         String cardCvv = editCardCvv.getText().toString();
 
+        // TODO call merchant server to get token
+
+        // Instantiate the PaymentManager in the SDK
         PaymentManager paymentManager = new PaymentManager(this);
 
-        PaymentCard card = new PaymentCard().setPan(cardNumber).setExpiryDate(cardExpiry).setCv2(cardCvv);
+        // Build up the card payment
+        PaymentCard card = new PaymentCard()
+                .setPan(cardNumber)
+                .setExpiryDate(cardExpiry)
+                .setCv2(cardCvv);
 
-        Transaction transaction = new Transaction().setCurrency("GBP").setAmount(100);
+        BillingAddress address = new BillingAddress()
+                .setLine1("Flat1")
+                .setLine2("Cauldron House")
+                .setLine3("A Street")
+                .setLine4("Twertonia")
+                .setCity("Bath")
+                .setRegion("Somerset")
+                .setPostcode("BA1 234")
+                .setCountryCode("GBR");
 
-        PayPointCredentials credentials = new PayPointCredentials().setToken("VALID_TOKEN");
+        Transaction transaction = new Transaction()
+                .setCurrency("GBP")
+                .setAmount(100)
+                .setMerchantReference(UUID.randomUUID().toString()); // Generate this in your app in whichever way suits
 
+        // Use test credentials
+        PayPointCredentials credentials = new PayPointCredentials().setInstallationId("1212312")
+                .setToken("VALID_TOKEN");
+
+        // Make the payment handling any errors
         PaymentRequest request = new PaymentRequest()
                 .setCallback(this)
                 .setCard(card)
+                .setAddress(address)
                 .setTransaction(transaction)
-                .setUrl("http://10.0.3.2:5000/mobileapi/transactions")
+                .setUrl("http://192.168.3.138:5000/mobileapi")
                 .setCredentials(credentials);
 
         try {
@@ -98,25 +129,49 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             showError("Invalid Amount");
         } catch (TransactionInvalidCurrencyException e) {
             showError("Invalid Currency");
+        } catch (CredentialMissingException e) {
+            showError("Please pass in token and installation id");
         }
     }
 
+    /**
+     * Callback from SDK for payment succeeded
+     * @param paymentSuccess
+     */
     @Override
     public void paymentSucceeded(com.paypoint.sdk.library.payment.PaymentSuccess paymentSuccess) {
         onPaymentEnded();
 
-        // TODO show receipt
+        showMessage("Success", "Your payment was successful!");
     }
 
+    /**
+     * Callback from SDK for payment failed
+     * @param paymentError
+     */
     @Override
     public void paymentFailed(com.paypoint.sdk.library.payment.PaymentError paymentError) {
         onPaymentEnded();
 
-        // TODO show error
+        String reasonMessage = "";
+
+        if (paymentError != null) {
+            if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
+                reasonMessage = paymentError.getPayPointError().getReasonMessage();
+            } else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
+                reasonMessage = "Network error";
+            }
+        }
+        showError("Payment Failed: \n" + reasonMessage);
     }
 
     private void showError(String message) {
         CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message);
+        messageDialog.show(getSupportFragmentManager(), "");
+    }
+
+    private void showMessage(String title, String message) {
+        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance(title, message);
         messageDialog.show(getSupportFragmentManager(), "");
     }
 
