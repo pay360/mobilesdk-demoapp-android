@@ -1,11 +1,19 @@
 <resources>
-    <string name="app_name">PayPoint SDK Demo</string>
+    <string name="app_name">SDK Demo</string>
 
     <string name="activity_payment_title">Payment</string>
+    <string name="activity_receipt_title">Receipt</string>
 
     <string name="payment_card_number">Card Number</string>
     <string name="payment_expiry">Expiry</string>
     <string name="payment_cvc">CVV</string>
     <string name="payment_button_text">Pay Now</string>
+
+    <string name="receipt_card_number">Card Number:</string>
+    <string name="receipt_card_number_formatted">**** **** **** %s</string>
+    <string name="receipt_merchant_ref">Merchant Ref:</string>
+    <string name="receipt_transaction_id">Transaction Id:</string>
+    <string name="receipt_amount">Amount:</string>
+    <string name="receipt_amount_formatted">£%.2f</string>
 
 </resources>

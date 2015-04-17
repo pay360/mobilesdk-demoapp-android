@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReceiptActivity"
+    android:background="@android:color/white">
+
+   <include android:layout_width="match_parent"
+       android:layout_height="wrap_content" layout="@layout/toolbar" android:layout_alignParentTop="true"/>
+
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
+
+       <TextView android:id="@+id/labelThumbs"
+           android:text="\uF00C" android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="70sp"
+           android:layout_gravity="center_horizontal"
+           android:textColor="@color/paypoint_yellow"
+           android:layout_marginTop="50dp"
+           android:layout_marginBottom="50dp"
+           android:visibility="invisible"/>
+
+       <TableLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content">
+
+           <TableRow>
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"
+                   android:text="@string/receipt_card_number"
+                   android:layout_marginRight="@dimen/activity_horizontal_margin_half"/>
+
+               <TextView android:id="@+id/textCardNumberMasked"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"/>
+           </TableRow>
+
+           <TableRow android:layout_marginTop="@dimen/activity_vertical_margin">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"
+                   android:text="@string/receipt_merchant_ref"
+                   android:layout_marginRight="@dimen/activity_horizontal_margin_half"/>
+
+               <TextView android:id="@+id/textMechantRef"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"/>
+           </TableRow>
+
+           <TableRow android:layout_marginTop="@dimen/activity_vertical_margin">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"
+                   android:text="@string/receipt_transaction_id"
+                   android:layout_marginRight="@dimen/activity_horizontal_margin_half"/>
+
+               <TextView android:id="@+id/textTransactionId"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"/>
+           </TableRow>
+
+           <TableRow android:layout_marginTop="@dimen/activity_vertical_margin">
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"
+                   android:text="@string/receipt_amount"
+                   android:layout_marginRight="@dimen/activity_horizontal_margin_half"/>
+
+               <TextView android:id="@+id/textAmount"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   style="@style/Text.Normal"/>
+           </TableRow>
+       </TableLayout>
+   </LinearLayout>
+</RelativeLayout>

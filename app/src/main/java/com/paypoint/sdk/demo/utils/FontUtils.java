@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class FontUtils {
 
     private static Typeface FONT_REGULAR;
+    private static Typeface FONT_AWESOME;
 
     private static boolean fontsNotLoaded = true;
 
@@ -30,6 +31,15 @@ public class FontUtils {
             }
         }
         return font;
+    }
+
+    public static void setFontAwesome(Context context, TextView textView) {
+
+        FONT_AWESOME = readFont(context, FONT_AWESOME, "FontAwesome.otf");
+
+        if (FONT_AWESOME != null) {
+            textView.setTypeface(FONT_AWESOME, Typeface.NORMAL);
+        }
     }
 
     /**
@@ -77,5 +87,4 @@ public class FontUtils {
             }
         }
     }
-
 }

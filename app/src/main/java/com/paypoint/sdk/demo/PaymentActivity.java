@@ -1,5 +1,6 @@
 package com.paypoint.sdk.demo;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -24,8 +25,8 @@ import java.util.UUID;
 
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback {
 
-    private static final String URL = "http://10.0.3.2:5000/mobileapi";         // GEnymotion
-//    private static final String URL = "http://192.168.3.138:5000/mobileapi";    // Pete's machine
+//    private static final String URL = "http://10.0.3.2:5000/mobileapi";       // Genymotion
+    private static final String URL = "http://192.168.3.138:5000/mobileapi";    // Pete's machine
 
     private EditText editCardNumber;
     private EditText editCardExpiry;
@@ -42,6 +43,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.activity_payment_title);
 
         editCardNumber = (EditText)findViewById(R.id.editCardNumber);
         editCardExpiry = (EditText)findViewById(R.id.editCardExpiry);
@@ -49,6 +51,12 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         buttonPay = (Button)findViewById(R.id.buttonPay);
 
         editCardNumber.addTextChangedListener(new CardNumberFormatter());
+
+        // TEST DETAILS START
+        editCardNumber.setText("9900 0000 0000 5159");
+        editCardExpiry.setText("1115");
+        editCardCvv.setText("123");
+        // TEXT DETAILS END
 
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,12 +96,11 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         Transaction transaction = new Transaction()
                 .setCurrency("GBP")
                 .setAmount(100.00f)
-                .setMerchantReference(UUID.randomUUID().toString()); // Generate this in your app in whichever way suits
+                .setMerchantReference("PP_" + UUID.randomUUID().toString().substring(0, 8)); // Generate this in your app in whichever way suits
 
         // Use test credentials
         PayPointCredentials credentials = new PayPointCredentials().setInstallationId("1212312")
                 .setToken("VALID_TOKEN");
-
 
         // TODO add endpoint manager to get preconfigured environments
         //String url = EndpointManager.getUrl(MITE);
@@ -107,33 +114,11 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setUrl(URL)
                 .setCredentials(credentials);
 
-//        try {
-//            paymentManager.makePayment(request);
-//            onPaymentStarted();
-//        } catch (NoNetworkException e) {
-//            showError("No Network");
-//        } catch (CardInvalidExpiryException e) {
-//            showError("Invalid Expiry Date");
-//        } catch (CardExpiredException e) {
-//            showError("Card Expired");
-//        } catch (CardInvalidCv2Exception e) {
-//            showError("Invalid CVV");
-//        } catch (CardInvalidPanException e) {
-//            showError("Invalid Card Number");
-//        } catch (CardInvalidLuhnException e) {
-//            showError("Invalid Card Number");
-//        } catch (TransactionInvalidAmountException e) {
-//            showError("Invalid Amount");
-//        } catch (TransactionInvalidCurrencyException e) {
-//            showError("Invalid Currency");
-//        } catch (CredentialMissingException e) {
-//            showError("Please pass in token and installation id");
-//        }
-
         try {
             paymentManager.makePayment(request);
             onPaymentStarted();
         } catch (PaymentException e) {
+            // handle all errors
             String errorMessage = "Unknown error";
 
             switch (e.getErrorCode()) {
@@ -174,7 +159,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      * @param paymentSuccess
      */
     @Override
-    public void paymentSucceeded(com.paypoint.sdk.library.payment.PaymentSuccess paymentSuccess) {
+    public void paymentSucceeded(final com.paypoint.sdk.library.payment.PaymentSuccess paymentSuccess) {
 
         Handler handler = new Handler();
 
@@ -183,7 +168,10 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             public void run() {
                 onPaymentEnded();
 
-                showMessage("Success", "Your payment was successful!");
+                // Show receipt activity passing across the paymentSuccess details
+                Intent intent = new Intent(PaymentActivity.this, ReceiptActivity.class);
+                intent.putExtra(ReceiptActivity.EXTRA_RECEIPT, paymentSuccess);
+                startActivity(intent);
             }
         }, 2000);
     }
