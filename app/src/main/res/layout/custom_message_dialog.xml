@@ -3,10 +3,11 @@
     android:layout_width="200dp"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:id="@+id/viewRoot">
 
     <TextView
-        android:id="@+id/dialog_title"
+        android:id="@+id/textTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -16,7 +17,7 @@
         android:background="@color/paypoint_blue"/>
 
     <TextView
-        android:id="@+id/dialog_message"
+        android:id="@+id/textMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
@@ -25,10 +26,11 @@
 
     <Button
         android:background="@drawable/button_bg"
-        android:id="@+id/dialog_ok_button"
+        android:id="@+id/buttonOK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OK"
+        android:textColor="@drawable/button_text"
         style="@style/Text.Normal"
         android:paddingLeft="18dp"
         android:paddingRight="18dp"

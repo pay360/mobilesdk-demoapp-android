@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paypoint.sdk.demo.R;
+import com.paypoint.sdk.demo.utils.FontUtils;
 
 public class CustomWaitDialog extends DialogFragment {
 
@@ -33,6 +34,8 @@ public class CustomWaitDialog extends DialogFragment {
 
         d.setContentView(R.layout.custom_progress_dialog);
 
+        FontUtils.setFontForHierarchy(this.getActivity(), d.findViewById(R.id.viewRoot));
+
         TextView titleView = (TextView)d.findViewById(R.id.textMessage);
 
         Animation waitAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.pulse);
@@ -40,8 +43,6 @@ public class CustomWaitDialog extends DialogFragment {
         ImageView imageLogo = (ImageView)d.findViewById(R.id.imageLogo);
 
         imageLogo.startAnimation(waitAnimation);
-
-        //titleView.setTypeface(FontManager.getRegularFont(getActivity()));
 
         titleView.setText(getArguments().getString(ARG_MESSAGE));
 

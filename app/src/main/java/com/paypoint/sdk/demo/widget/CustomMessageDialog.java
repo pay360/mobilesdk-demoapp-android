@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.paypoint.sdk.demo.R;
+import com.paypoint.sdk.demo.utils.FontUtils;
 
 /**
  * Who:  Pete
@@ -37,21 +38,17 @@ public class CustomMessageDialog extends DialogFragment {
 
         d.setContentView(R.layout.custom_message_dialog);
 
-        TextView titleView = (TextView)d.findViewById(R.id.dialog_title);
+        FontUtils.setFontForHierarchy(this.getActivity(), d.findViewById(R.id.viewRoot));
 
-        //titleView.setTypeface(FontManager.getRegularFont(getActivity()));
+        TextView titleView = (TextView)d.findViewById(R.id.textTitle);
 
         titleView.setText(getArguments().getString(ARG_TITLE));
 
-        TextView messageView = (TextView) d.findViewById(R.id.dialog_message);
-
-        //messageView.setTypeface(FontManager.getRegularFont(getActivity()));
+        TextView messageView = (TextView) d.findViewById(R.id.textMessage);
 
         messageView.setText(getArguments().getString(ARG_MESSAGE));
 
-        Button okButton = (Button) d.findViewById(R.id.dialog_ok_button);
-
-        //messageView.setTypeface(FontManager.getMediumFont(getActivity()));
+        Button okButton = (Button) d.findViewById(R.id.buttonOK);
 
         okButton.setOnClickListener(new View.OnClickListener() {
 
