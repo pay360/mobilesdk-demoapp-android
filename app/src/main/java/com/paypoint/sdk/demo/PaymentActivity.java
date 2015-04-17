@@ -1,29 +1,17 @@
 package com.paypoint.sdk.demo;
 
-import android.content.res.Configuration;
-import android.support.v7.app.ActionBar;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.CycleInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
+import com.paypoint.sdk.demo.utils.FontUtils;
 import com.paypoint.sdk.demo.widget.CustomMessageDialog;
 import com.paypoint.sdk.demo.widget.CustomWaitDialog;
-import com.paypoint.sdk.library.exception.CardExpiredException;
-import com.paypoint.sdk.library.exception.CardInvalidCv2Exception;
-import com.paypoint.sdk.library.exception.CardInvalidExpiryException;
-import com.paypoint.sdk.library.exception.CardInvalidLuhnException;
-import com.paypoint.sdk.library.exception.CardInvalidPanException;
-import com.paypoint.sdk.library.exception.CredentialMissingException;
-import com.paypoint.sdk.library.exception.NoNetworkException;
-import com.paypoint.sdk.library.exception.TransactionInvalidAmountException;
-import com.paypoint.sdk.library.exception.TransactionInvalidCurrencyException;
+import com.paypoint.sdk.library.exception.PaymentException;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
@@ -36,6 +24,9 @@ import java.util.UUID;
 
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback {
 
+    private static final String URL = "http://10.0.3.2:5000/mobileapi";         // GEnymotion
+//    private static final String URL = "http://192.168.3.138:5000/mobileapi";    // Pete's machine
+
     private EditText editCardNumber;
     private EditText editCardExpiry;
     private EditText editCardCvv;
@@ -46,6 +37,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        FontUtils.setFontForHierarchy(this, getWindow().getDecorView().findViewById(android.R.id.content));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,12 +87,16 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         Transaction transaction = new Transaction()
                 .setCurrency("GBP")
-                .setAmount(100)
+                .setAmount(100.00f)
                 .setMerchantReference(UUID.randomUUID().toString()); // Generate this in your app in whichever way suits
 
         // Use test credentials
         PayPointCredentials credentials = new PayPointCredentials().setInstallationId("1212312")
                 .setToken("VALID_TOKEN");
+
+
+        // TODO add endpoint manager to get preconfigured environments
+        //String url = EndpointManager.getUrl(MITE);
 
         // Make the payment handling any errors
         PaymentRequest request = new PaymentRequest()
@@ -107,30 +104,68 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setCard(card)
                 .setAddress(address)
                 .setTransaction(transaction)
-                .setUrl("http://192.168.3.138:5000/mobileapi")
+                .setUrl(URL)
                 .setCredentials(credentials);
+
+//        try {
+//            paymentManager.makePayment(request);
+//            onPaymentStarted();
+//        } catch (NoNetworkException e) {
+//            showError("No Network");
+//        } catch (CardInvalidExpiryException e) {
+//            showError("Invalid Expiry Date");
+//        } catch (CardExpiredException e) {
+//            showError("Card Expired");
+//        } catch (CardInvalidCv2Exception e) {
+//            showError("Invalid CVV");
+//        } catch (CardInvalidPanException e) {
+//            showError("Invalid Card Number");
+//        } catch (CardInvalidLuhnException e) {
+//            showError("Invalid Card Number");
+//        } catch (TransactionInvalidAmountException e) {
+//            showError("Invalid Amount");
+//        } catch (TransactionInvalidCurrencyException e) {
+//            showError("Invalid Currency");
+//        } catch (CredentialMissingException e) {
+//            showError("Please pass in token and installation id");
+//        }
 
         try {
             paymentManager.makePayment(request);
             onPaymentStarted();
-        } catch (NoNetworkException e) {
-            showError("No Network");
-        } catch (CardInvalidExpiryException e) {
-            showError("Invalid Expiry Date");
-        } catch (CardExpiredException e) {
-            showError("Card Expired");
-        } catch (CardInvalidCv2Exception e) {
-            showError("Invalid CVV");
-        } catch (CardInvalidPanException e) {
-            showError("Invalid Card Number");
-        } catch (CardInvalidLuhnException e) {
-            showError("Invalid Card Number");
-        } catch (TransactionInvalidAmountException e) {
-            showError("Invalid Amount");
-        } catch (TransactionInvalidCurrencyException e) {
-            showError("Invalid Currency");
-        } catch (CredentialMissingException e) {
-            showError("Please pass in token and installation id");
+        } catch (PaymentException e) {
+            String errorMessage = "Unknown error";
+
+            switch (e.getErrorCode()) {
+                case CARD_EXPIRED:
+                    errorMessage = "Card has expired";
+                    break;
+                case CARD_EXPIRY_INVALID:
+                    errorMessage = "Invalid expiry date";
+                    break;
+                case CARD_PAN_INVALID:
+                    errorMessage = "Invalid card number";
+                    break;
+                case CARD_PAN_INVALID_LUHN:
+                    errorMessage = "Invalid card number";
+                    break;
+                case CARD_CV2_INVALID:
+                    errorMessage = "Invalid CV2 number";
+                    break;
+                case TRANSACTION_INVALID_AMOUNT:
+                    errorMessage = "Invalid transaction amount";
+                    break;
+                case TRANSACTION_INVALID_CURRENCY:
+                    errorMessage = "Invalid transaction currency";
+                    break;
+                case NETWORK_NO_CONNECTION:
+                    errorMessage = "No network connection";
+                    break;
+                case CREDENTIALS_INVALID:
+                    errorMessage = "Please pass in token and installation id\"";
+                    break;
+            }
+            showError(errorMessage);
         }
     }
 
@@ -140,9 +175,17 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      */
     @Override
     public void paymentSucceeded(com.paypoint.sdk.library.payment.PaymentSuccess paymentSuccess) {
-        onPaymentEnded();
 
-        showMessage("Success", "Your payment was successful!");
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onPaymentEnded();
+
+                showMessage("Success", "Your payment was successful!");
+            }
+        }, 2000);
     }
 
     /**
