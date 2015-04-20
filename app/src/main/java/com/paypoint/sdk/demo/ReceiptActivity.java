@@ -9,10 +9,8 @@ import android.widget.TextView;
 
 import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-import com.facebook.rebound.ui.Util;
 import com.paypoint.sdk.demo.utils.FontUtils;
 import com.paypoint.sdk.library.payment.PaymentSuccess;
 
@@ -26,7 +24,7 @@ public class ReceiptActivity extends ActionBarActivity {
     public static final String EXTRA_RECEIPT = "com.paypoint.sdk.demo.EXTRA_RECEIPT";
     private static final int ANIMATION_DELAY = 1000;
 
-    private TextView textThumbs;
+    private TextView textTick;
     private TextView textCardNumber;
     private TextView textMerchantRef;
     private TextView textTransactionId;
@@ -53,19 +51,19 @@ public class ReceiptActivity extends ActionBarActivity {
             }
         });
 
-        textThumbs = (TextView)findViewById(R.id.labelThumbs);
+        textTick = (TextView)findViewById(R.id.labelTick);
         textCardNumber = (TextView)findViewById(R.id.textCardNumberMasked);
         textMerchantRef = (TextView)findViewById(R.id.textMechantRef);
         textTransactionId = (TextView)findViewById(R.id.textTransactionId);
         textAmount = (TextView)findViewById(R.id.textAmount);
+
+        FontUtils.setFontAwesome(this, textTick);
 
         PaymentSuccess paymentSuccess = (PaymentSuccess)getIntent().getSerializableExtra(EXTRA_RECEIPT);
 
         if (paymentSuccess != null) {
             displayReceipt(paymentSuccess);
         }
-
-        FontUtils.setFontAwesome(this, textThumbs);
     }
 
     /**
@@ -100,8 +98,8 @@ public class ReceiptActivity extends ActionBarActivity {
 
                 // Map the spring to the selected photo scale as it moves into and out of the grid.
                 float scale = (float) SpringUtil.mapValueFromRangeToRange(value, 0, 0.5, 0, 1);
-                textThumbs.setScaleY(scale);
-                textThumbs.setScaleX(scale);
+                textTick.setScaleY(scale);
+                textTick.setScaleX(scale);
             }
         });
 
@@ -111,7 +109,7 @@ public class ReceiptActivity extends ActionBarActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                textThumbs.setVisibility(View.VISIBLE);
+                textTick.setVisibility(View.VISIBLE);
                 spring.setEndValue(1);
             }
         }, ANIMATION_DELAY);

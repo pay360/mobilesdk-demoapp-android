@@ -17,7 +17,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin">
 
-       <TextView android:id="@+id/labelThumbs"
+       <TextView android:id="@+id/labelTick"
            android:text="\uF00C" android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:textSize="70sp"

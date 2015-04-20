@@ -29,8 +29,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
 
+    // TODO will change to Maven artifact
     compile(name:'library-release', ext:'aar')
 
+    // TODO these dependencies will be pulled in by the SDK when provided as Maven artifact
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'

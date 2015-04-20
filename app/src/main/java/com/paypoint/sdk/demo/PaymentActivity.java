@@ -14,10 +14,10 @@ import com.paypoint.sdk.demo.utils.FontUtils;
 import com.paypoint.sdk.demo.widget.CustomMessageDialog;
 import com.paypoint.sdk.demo.widget.CustomWaitDialog;
 import com.paypoint.sdk.library.exception.PaymentValidationException;
-import com.paypoint.sdk.library.network.EndpointManager;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
+import com.paypoint.sdk.library.payment.PaymentSuccess;
 import com.paypoint.sdk.library.payment.request.PaymentCard;
 import com.paypoint.sdk.library.payment.request.Transaction;
 import com.paypoint.sdk.library.security.PayPointCredentials;
@@ -97,6 +97,9 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         String cardExpiry = editCardExpiry.getText().toString();
         String cardCvv = editCardCvv.getText().toString();
 
+        // this is just an example merchant reference - generate this according to your own requirements
+        String merchantRef = "PP_" + UUID.randomUUID().toString().substring(0, 8);
+
         // build up the card payment
         PaymentCard card = new PaymentCard()
                 .setPan(cardNumber)
@@ -106,22 +109,22 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         Transaction transaction = new Transaction()
                 .setCurrency("GBP")
                 .setAmount(100.00f)
-                .setMerchantReference("PP_" + UUID.randomUUID().toString().substring(0, 8)); // Generate this in your app in whichever way suits
+                .setMerchantReference(merchantRef);
 
-        // build the request
+        // create the payment request
         request = new PaymentRequest()
                 .setCallback(this)
                 .setCard(card)
                 .setTransaction(transaction);
 
         try {
-            // validate payment details entered by user
+            // locally validate payment details entered by user
             paymentManager.validatePaymentDetails(request);
 
-            // start animation
+            // start the wait animation - customise this according to your own branding
             onPaymentStarted();
 
-            // payment details valid - get Merchant token
+            // payment details valid - get merchant token
             tokenManager.getMerchantToken(URL_MERCHANT, this);
 
         } catch (PaymentValidationException e) {
@@ -130,6 +133,9 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     }
 
     private void showValidationError(PaymentValidationException e) {
+
+        onPaymentEnded();
+
         // handle all errors
         String errorMessage = "Unknown error";
 
@@ -177,13 +183,14 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     public void getTokenSucceeded(String token) {
 
         // create the PayPoint credentials to use for the request
-        PayPointCredentials credentials = new PayPointCredentials().setInstallationId("1212312")
+        PayPointCredentials credentials = new PayPointCredentials()
+                .setInstallationId("1212312")
                 .setToken(token);
 
         paymentManager.setCredentials(credentials);
 
         try {
-            // make the payment
+            // now make the payment
             paymentManager.makePayment(request);
         } catch (PaymentValidationException e) {
             showValidationError(e);
@@ -205,7 +212,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      * @param paymentSuccess
      */
     @Override
-    public void paymentSucceeded(final com.paypoint.sdk.library.payment.PaymentSuccess paymentSuccess) {
+    public void paymentSucceeded(final PaymentSuccess paymentSuccess) {
 
         Handler handler = new Handler();
 
@@ -229,7 +236,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      * @param paymentError
      */
     @Override
-    public void paymentFailed(com.paypoint.sdk.library.payment.PaymentError paymentError) {
+    public void paymentFailed(PaymentError paymentError) {
         onPaymentEnded();
 
         String reasonMessage = "";
