@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">SDK Demo</string>
 
+    <string name="activity_splash_title">Mobile SDK</string>
     <string name="activity_payment_title">Payment</string>
     <string name="activity_receipt_title">Receipt</string>
+
+    <string name="splash_paypoint">PayPoint</string>
+    <string name="splash_button_text">Start</string>
 
     <string name="payment_card_number">Card Number</string>
     <string name="payment_expiry">Expiry</string>

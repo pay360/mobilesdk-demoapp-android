@@ -4,6 +4,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 /**
+ * Implements card number entry as xxxx xxxx xxxx xxxx
  * Who:  Pete
  * When: 16/04/2015
  * What:

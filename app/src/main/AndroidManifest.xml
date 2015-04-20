@@ -12,13 +12,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".PaymentActivity"
-            android:screenOrientation="portrait"
-            android:noHistory="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
@@ -29,6 +23,13 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
     </application>
 

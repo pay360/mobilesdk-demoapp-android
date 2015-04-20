@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class FontUtils {
 
     private static Typeface FONT_REGULAR;
+    private static Typeface FONT_BOLD;
     private static Typeface FONT_AWESOME;
 
     private static boolean fontsNotLoaded = true;
@@ -39,6 +40,15 @@ public class FontUtils {
 
         if (FONT_AWESOME != null) {
             textView.setTypeface(FONT_AWESOME, Typeface.NORMAL);
+        }
+    }
+
+    public static void setFoundryBold(Context context, TextView textView) {
+
+        FONT_BOLD = readFont(context, FONT_BOLD, "FOUCONDM.otf");
+
+        if (FONT_BOLD != null) {
+            textView.setTypeface(FONT_BOLD, Typeface.NORMAL);
         }
     }
 

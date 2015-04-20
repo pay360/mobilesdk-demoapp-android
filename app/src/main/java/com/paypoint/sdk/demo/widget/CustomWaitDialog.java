@@ -30,7 +30,7 @@ public class CustomWaitDialog extends DialogFragment {
         Dialog d = new Dialog(getActivity(), R.style.dialog);
 
         d.setCanceledOnTouchOutside(false);
-        d.setCancelable(false);
+        setCancelable(false);
 
         d.setContentView(R.layout.custom_progress_dialog);
 

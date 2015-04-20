@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:digits="01234 56789"
             android:inputType="number"
-            android:maxLength="19"
+            android:maxLength="23"
             style="@style/Text.Edit"
             android:layout_marginTop="@dimen/activity_vertical_margin_quarter"/>
 
