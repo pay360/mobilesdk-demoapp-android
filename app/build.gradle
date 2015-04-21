@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.paypoint.sdk.demo"
-        minSdkVersion 15
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -30,7 +30,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
 
     // TODO will change to Maven artifact
-    compile(name:'library-release', ext:'aar')
+    compile(name:'paypoint_sdk-0.0.1', ext:'aar')
 
     // TODO these dependencies will be pulled in by the SDK when provided as Maven artifact
     compile 'com.squareup.retrofit:retrofit:1.9.0'
