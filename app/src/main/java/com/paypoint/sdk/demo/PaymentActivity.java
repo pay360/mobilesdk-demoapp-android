@@ -98,7 +98,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         String cardCvv = editCardCvv.getText().toString();
 
         // this is just an example merchant reference - generate this according to your own requirements
-        String merchantRef = "PP_" + UUID.randomUUID().toString().substring(0, 8);
+        String merchantRef = "mer_" + UUID.randomUUID().toString().substring(0, 8);
 
         // build up the card payment
         PaymentCard card = new PaymentCard()
@@ -244,6 +244,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         if (paymentError != null) {
             if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
                 reasonMessage = paymentError.getPayPointError().getReasonMessage();
+                PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
             } else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
                 reasonMessage = "Network error";
             }
