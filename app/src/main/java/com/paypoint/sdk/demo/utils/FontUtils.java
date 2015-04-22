@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2015. PayPoint
+ */
+
 package com.paypoint.sdk.demo.utils;
 
 import android.content.Context;

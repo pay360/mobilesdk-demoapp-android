@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2015. PayPoint
+ */
+
 package com.paypoint.sdk.demo;
 
 import android.os.Bundle;
@@ -17,7 +21,7 @@ import com.paypoint.sdk.library.payment.PaymentSuccess;
 /**
  * Who:  Pete
  * When: 17/04/2015
- * What:
+ * What: Activity for display payment receipt
  */
 public class ReceiptActivity extends ActionBarActivity {
 

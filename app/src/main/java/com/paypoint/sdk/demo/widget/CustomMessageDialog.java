@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2015. PayPoint
+ */
+
 package com.paypoint.sdk.demo.widget;
 
 import android.app.Dialog;
@@ -14,7 +18,7 @@ import com.paypoint.sdk.demo.utils.FontUtils;
 /**
  * Who:  Pete
  * When: 15/04/2015
- * What:
+ * What: PayPoint styled message dialog
  */
 public class CustomMessageDialog extends DialogFragment {
 

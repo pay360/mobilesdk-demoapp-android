@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2015. PayPoint
+ */
+
 package com.paypoint.sdk.demo.widget;
 
 import android.animation.Keyframe;
