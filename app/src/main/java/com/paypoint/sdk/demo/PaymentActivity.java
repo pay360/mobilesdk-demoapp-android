@@ -33,11 +33,12 @@ import retrofit.RetrofitError;
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback,
     MerchantTokenManager.GetTokenCallback {
 
-//    private static final String URL_PAYPOINT = "http://10.0.3.2:5000/mobileapi";       // Genymotion
-    private static final String URL_PAYPOINT = "http://192.168.3.138:5000/mobileapi";    // Pete's machine
+    private static final String URL_PAYPOINT = "http://ppmobilesdkstub.herokuapp.com/mobileapi";
+    private static final String URL_MERCHANT = "http://ppmobilesdkstub.herokuapp.com/merchant";
 
-//    private static final String URL_MERCHANT = "http://10.0.3.2:5001/merchant";       // Genymotion
-    private static final String URL_MERCHANT = "http://192.168.3.138:5001/merchant";    // Pete's machine
+    // local stubs
+//    private static final String URL_PAYPOINT = "http://192.168.3.138:5000/mobileapi";
+//    private static final String URL_MERCHANT = "http://192.168.3.138:5001/merchant";
 
     private ShakeableEditText editCardNumber;
     private ShakeableEditText editCardExpiry;
@@ -167,7 +168,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         String cardExpiry = editCardExpiry.getText().toString();
         String cardCvv = editCardCvv.getText().toString();
 
-        // this is just an example merchant reference - generate this according to your own requirements
+        // MERCHANT TO IMPLEMENT - generate this according to your own requirements
         String merchantRef = "mer_" + UUID.randomUUID().toString().substring(0, 8);
 
         // build up the card payment
@@ -195,7 +196,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             // start the wait animation - customise this according to your own branding
             onPaymentStarted();
 
-            // payment details valid - get merchant token
+            // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
             tokenManager.getMerchantToken(URL_MERCHANT, this);
 
         } catch (PaymentValidationException e) {
@@ -281,22 +282,14 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      */
     @Override
     public void paymentSucceeded(final PaymentSuccess paymentSuccess) {
+        onPaymentEnded();
 
-        Handler handler = new Handler();
+        // show receipt activity passing across the paymentSuccess details
+        Intent intent = new Intent(PaymentActivity.this, ReceiptActivity.class);
+        intent.putExtra(ReceiptActivity.EXTRA_RECEIPT, paymentSuccess);
+        finish();
+        startActivity(intent);
 
-        // TODO postDelayed only used for localhost testing - remove once using a remote server
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onPaymentEnded();
-
-                // show receipt activity passing across the paymentSuccess details
-                Intent intent = new Intent(PaymentActivity.this, ReceiptActivity.class);
-                intent.putExtra(ReceiptActivity.EXTRA_RECEIPT, paymentSuccess);
-                finish();
-                startActivity(intent);
-            }
-        }, 2000);
     }
 
     /**
@@ -312,6 +305,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         if (paymentError != null) {
             if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
                 reasonMessage = paymentError.getPayPointError().getReasonMessage();
+
+                // PayPointError also provides an error enum
                 PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
             } else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
                 reasonMessage = "Network error";
