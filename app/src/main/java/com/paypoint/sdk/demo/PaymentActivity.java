@@ -1,5 +1,8 @@
 package com.paypoint.sdk.demo;
 
+import android.animation.Keyframe;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -13,6 +16,7 @@ import com.paypoint.sdk.demo.merchant.MerchantTokenManager;
 import com.paypoint.sdk.demo.utils.FontUtils;
 import com.paypoint.sdk.demo.widget.CustomMessageDialog;
 import com.paypoint.sdk.demo.widget.CustomWaitDialog;
+import com.paypoint.sdk.demo.widget.ShakeableEditText;
 import com.paypoint.sdk.library.exception.PaymentValidationException;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
@@ -35,9 +39,9 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 //    private static final String URL_MERCHANT = "http://10.0.3.2:5001/merchant";       // Genymotion
     private static final String URL_MERCHANT = "http://192.168.3.138:5001/merchant";    // Pete's machine
 
-    private EditText editCardNumber;
-    private EditText editCardExpiry;
-    private EditText editCardCvv;
+    private ShakeableEditText editCardNumber;
+    private ShakeableEditText editCardExpiry;
+    private ShakeableEditText editCardCvv;
     private Button buttonPay;
     private CustomWaitDialog waitDialog;
     private PaymentManager paymentManager;
@@ -64,18 +68,14 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             }
         });
 
-        editCardNumber = (EditText)findViewById(R.id.editCardNumber);
-        editCardExpiry = (EditText)findViewById(R.id.editCardExpiry);
-        editCardCvv = (EditText)findViewById(R.id.editCardCVV);
+        editCardNumber = (ShakeableEditText)findViewById(R.id.editCardNumber);
+        editCardExpiry = (ShakeableEditText)findViewById(R.id.editCardExpiry);
+        editCardCvv = (ShakeableEditText)findViewById(R.id.editCardCVV);
         buttonPay = (Button)findViewById(R.id.buttonPay);
 
-        editCardNumber.addTextChangedListener(new CardNumberFormatter());
+        initialiseInlineValidation();
 
-        // TEST DETAILS START
-//        editCardNumber.setText("9900 0000 0000 5159");
-//        editCardExpiry.setText("1115");
-//        editCardCvv.setText("123");
-        // TEXT DETAILS END
+        editCardNumber.addTextChangedListener(new CardNumberFormatter());
 
         buttonPay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +89,76 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setUrl(URL_PAYPOINT);
 
         tokenManager = new MerchantTokenManager();
+    }
+
+    /**
+     * This is an example of how an app might do inline validation of payment fields
+     * before the user commits to the payment
+     */
+    private void initialiseInlineValidation() {
+
+        editCardNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    try {
+                        editCardNumber.clearError();
+                        paymentManager.validateCardPan(editCardNumber.getText().toString());
+                    } catch (PaymentValidationException e) {
+                        switch (e.getErrorCode()) {
+                            case CARD_PAN_INVALID:
+                                editCardNumber.setError("Invalid card number");
+                                break;
+                            case CARD_PAN_INVALID_LUHN:
+                                editCardNumber.setError("Invalid card number");
+                                break;
+                        }
+                    }
+                } else {
+                    editCardNumber.showError();
+                }
+            }
+        });
+
+        editCardExpiry.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    try {
+                        editCardExpiry.clearError();
+                        paymentManager.validateCardExpiry(editCardExpiry.getText().toString());
+                    } catch (PaymentValidationException e) {
+                        switch (e.getErrorCode()) {
+                            case CARD_EXPIRY_INVALID:
+                                editCardExpiry.setError("Invalid expiry date");
+                                break;
+                        }
+                    }
+                } else {
+                    editCardExpiry.showError();
+                }
+            }
+        });
+
+        editCardCvv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus) {
+                    try {
+                        editCardCvv.clearError();
+                        paymentManager.validateCardCv2(editCardCvv.getText().toString());
+                    } catch (PaymentValidationException e) {
+                        switch (e.getErrorCode()) {
+                            case CARD_CV2_INVALID:
+                                editCardCvv.setError("Invalid CVV");
+                                break;
+                        }
+                    }
+                } else {
+                    editCardCvv.showError();
+                }
+            }
+        });
     }
 
     private void makePayment() {
@@ -106,6 +176,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setExpiryDate(cardExpiry)
                 .setCv2(cardCvv);
 
+        // currency and amount hardcoded in this instance for demo
         Transaction transaction = new Transaction()
                 .setCurrency("GBP")
                 .setAmount(100.00f)
@@ -140,9 +211,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         String errorMessage = "Unknown error";
 
         switch (e.getErrorCode()) {
-            case CARD_EXPIRED:
-                errorMessage = "Card has expired";
-                break;
             case CARD_EXPIRY_INVALID:
                 errorMessage = "Invalid expiry date";
                 break;
