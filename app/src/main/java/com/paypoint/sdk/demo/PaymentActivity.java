@@ -33,8 +33,16 @@ import retrofit.RetrofitError;
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback,
     MerchantTokenManager.GetTokenCallback {
 
-    private static final String URL_PAYPOINT = "http://ppmobilesdkstub.herokuapp.com/mobileapi";
-    private static final String URL_MERCHANT = "http://ppmobilesdkstub.herokuapp.com/merchant";
+    private static final String URL_PAYPOINT = "https://ppmobilesdkstub.herokuapp.com/mobileapi";
+    private static final String URL_MERCHANT = "https://ppmobilesdkstub.herokuapp.com/merchant";
+
+    /**
+     * The following card numbers can be used for testing against the test payment server:
+     * 9900 0000 0000 5159 – returns successful authorisation.
+     * 9900 0000 0000 5282 – returns payment declined.
+     * All other cards will return a server error.
+     *
+     */
 
     // local stubs
 //    private static final String URL_PAYPOINT = "http://192.168.3.138:5000/mobileapi";
