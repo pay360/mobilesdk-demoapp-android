@@ -9,4 +9,6 @@
 
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
+    <dimen name="shake_spacing">4dp</dimen>
+
 </resources>

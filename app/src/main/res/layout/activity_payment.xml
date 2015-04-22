@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             style="@style/Text.Normal"/>
 
-        <EditText android:id="@+id/editCardNumber"
+        <com.paypoint.sdk.demo.widget.ShakeableEditText android:id="@+id/editCardNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="01234 56789"
@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Text.Normal"/>
 
-                <EditText android:id="@+id/editCardExpiry"
+                <com.paypoint.sdk.demo.widget.ShakeableEditText android:id="@+id/editCardExpiry"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Text.Normal"/>
 
-                <EditText android:id="@+id/editCardCVV"
+                <com.paypoint.sdk.demo.widget.ShakeableEditText android:id="@+id/editCardCVV"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
