@@ -138,6 +138,9 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                         paymentManager.validateCardExpiry(editCardExpiry.getText().toString());
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
+                            case CARD_EXPIRED:
+                                editCardExpiry.setError("Card has expired");
+                                break;
                             case CARD_EXPIRY_INVALID:
                                 editCardExpiry.setError("Invalid expiry date");
                                 break;
@@ -220,6 +223,9 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         String errorMessage = "Unknown error";
 
         switch (e.getErrorCode()) {
+            case CARD_EXPIRED:
+                errorMessage = "Card has expired";
+                break;
             case CARD_EXPIRY_INVALID:
                 errorMessage = "Invalid expiry date";
                 break;
