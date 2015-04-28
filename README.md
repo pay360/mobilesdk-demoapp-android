@@ -154,16 +154,6 @@ if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
 }
 ```
 
-Test Credentials
-
-A test payment server is available at https://ppmobilesdkstub.herokuapp.com/mobileapi - pass this into PaymentManager.setUrl().
-
-A test merchant server is available at https://ppmobilesdkstub.herokuapp.com/merchant/getToken. See Demo app for example of retrieving the merchant token.
-The following card numbers can be used for testing against the test payment server:
-
-9900 0000 0000 5159 – returns successful authorisation.
-9900 0000 0000 5282 – returns payment declined.
-All other cards will return a server error.
 
 
 
