@@ -1,13 +1,17 @@
 #PayPoint Android SDK Installation + Integration Instructions
 
-Requirements
 Android Studio (currently tested on 1.1.0)
+
+Requires a minimum at minimum Android 4.0 (API level)
 
 ##Installation
 Either use an existing project or create a new project.
+
 Copy the PayPoint SDK library paypoint_sdk-x.x.x.aar into the module libs folder.
+
 Add the following to your module gradle build:
-NOTE this step will change once the library is available as a Maven artifact
+
+**NOTE this step will change once the library is available as a Maven artifact
 
 ```groovy
 repositories {
@@ -27,11 +31,16 @@ dependencies {
 ```
 
 In the module gradle build set minSdkVersion to 14 or above.
+
 Add the following permissions to your AndroidManifest.xml:
+
+```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
 
-Making a Payment
+##Making a Payment
+
 Create a simple activity accepting a card number, expiry and CV2.
 Create an instance of PaymentManager in onCreate():
 
@@ -62,8 +71,12 @@ PaymentRequest request = new PaymentRequest()
 
 The card holder address can also optionally be created and passed into the request, create an instance of BillingAddress, call the setter methods and pass to the PaymentRequest.
 Your activity will need to implement the PaymentManager.MakePaymentCallback interface.
+
 Validate the payment details handling the PaymentValidationException:
+
+```java
 paymentManager.validatePaymentDetails(request);
+```
 
 Note: the PaymentManager also provides static functions for inline validation of the card fields as they are being entered:
 
@@ -76,6 +89,8 @@ public static void validateCv2(String cv2) throws PaymentValidationException
 ```
 
 PaymentValidationException holds an error code enumeration describing the error.
+
+```java
 public enum ErrorCode {
     CARD_EXPIRED,           		// card has expired
     CARD_EXPIRY_INVALID,           	// incorrect length or non numeric
@@ -91,40 +106,54 @@ public enum ErrorCode {
     INVALID_TRANSACTION,           	// empty Transaction
     INVALID_CARD                    // empty PaymentCard
 }
+```
 
 If the PaymentRequest validates successfully i.e. does not throw a PaymentValidationException, your app should then communicate with your server to request a PayPoint authorisation token. This token, when returned, should be used to create a PayPointCredentials object which should then be passed to the PaymentManager
+
+```java
 PayPointCredentials credentials = new PayPointCredentials()
         .setInstallationId((<YOUR_INSTALLATION_ID>);)
         .setToken(token);
 
 paymentManager.setCredentials(credentials);
+```
 
 Next, make the payment by calling makePayment() on the PaymentManager passing the request:
+
+```java
 paymentManager.makePayment(request);
+```
 
 This call to makePayment() will callback to your app when completed in one of the following functions:
+
+```java
 public void paymentSucceeded(PaymentSuccess paymentSuccess)
 
 public void paymentFailed(PaymentError paymentError)
+```
 
 PaymentSuccess - has accessors for transaction id, merchant reference, amount, currency and last four digits of the card number.
 PaymentError – use getKind() to return the type of error. PayPoint errors contain a reasonCode and reasonMessage which can be used to feedback to the user:
+
+```java
 public enum ReasonCode {
-UNKNOWN(-1),
-SUCCESS(0),                         		// Operation successful as described
-INVALID(1),                         		// Request was not correctly formed
-AUTHENTICATION_FAILED(2),           // The presented API token was not valid, or the wrong type of authentication was used
-CLIENT_TOKEN_EXPIRED(3),            	// Get a new token
-UNAUTHORISED_REQUEST(4),            // The token was valid, but does not grant you access to use the specified feature
-TRANSACTION_FAILED_TO_PROCESS(5),   // The transaction was successfully submitted but failed to be processed correctly.
-SERVER_ERROR(6);                   	 // An internal server error occurred at paypoint
+    UNKNOWN(-1),
+    SUCCESS(0),                         // Operation successful as described
+    INVALID(1),                         // Request was not correctly formed
+    AUTHENTICATION_FAILED(2),           // The presented API token was not valid, or the wrong type of authentication was used
+    CLIENT_TOKEN_EXPIRED(3),            // Get a new token
+    UNAUTHORISED_REQUEST(4),            // The token was valid, but does not grant you access to use the specified feature
+    TRANSACTION_FAILED_TO_PROCESS(5),   // The transaction was successfully submitted but failed to be processed correctly.
+    SERVER_ERROR(6);                   	// An internal server error occurred at paypoint
 }
+
 if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
     String reasonMessage = paymentError.getPayPointError().getReasonMessage();
     PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
 } else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
     // network error
 }
+```
 
 Test Credentials
 
