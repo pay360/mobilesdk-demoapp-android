@@ -2,7 +2,7 @@
 
 Android Studio (currently tested on 1.1.0)
 
-Requires at minimum Android 4.0 (API level)
+Requires at minimum Android 4.0 (API level 14)
 
 **NOTE this step will change once the library is available as a Maven artifact**
 
