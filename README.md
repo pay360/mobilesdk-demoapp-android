@@ -2,16 +2,13 @@
 
 Android Studio (currently tested on 1.1.0)
 
-Requires a minimum at minimum Android 4.0 (API level)
+Requires at minimum Android 4.0 (API level)
 
-##Installation
-Either use an existing project or create a new project.
+**NOTE this step will change once the library is available as a Maven artifact**
 
 Copy the PayPoint SDK library paypoint_sdk-x.x.x.aar into the module libs folder.
 
 Add the following to your module gradle build:
-
-**NOTE this step will change once the library is available as a Maven artifact
 
 ```groovy
 repositories {
@@ -32,7 +29,7 @@ dependencies {
 
 In the module gradle build set minSdkVersion to 14 or above.
 
-Add the following permissions to your AndroidManifest.xml:
+Add the following permissions to your AndroidManifest.xml
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -42,14 +39,16 @@ Add the following permissions to your AndroidManifest.xml:
 ##Making a Payment
 
 Create a simple activity accepting a card number, expiry and CV2.
-Create an instance of PaymentManager in onCreate():
+Create an instance of PaymentManager in onCreate()
 
 ```java
 paymentManager = new PaymentManager(this)
         .setUrl(<PAYPOINT_URL>);
 ```
 
-In your payment button handler build a PaymentRequest:
+Use EndpointManager.getEndpointUrl() to get the URL for a PayPoint environment.
+
+In your payment button handler build a PaymentRequest
 
 ```java
 PaymentCard card = new PaymentCard()
@@ -72,13 +71,13 @@ PaymentRequest request = new PaymentRequest()
 The card holder address can also optionally be created and passed into the request, create an instance of BillingAddress, call the setter methods and pass to the PaymentRequest.
 Your activity will need to implement the PaymentManager.MakePaymentCallback interface.
 
-Validate the payment details handling the PaymentValidationException:
+Validate the payment details handling the PaymentValidationException
 
 ```java
 paymentManager.validatePaymentDetails(request);
 ```
 
-Note: the PaymentManager also provides static functions for inline validation of the card fields as they are being entered:
+Note: the PaymentManager also provides static functions for inline validation of the card fields as they are being entered
 
 ```java
 public static void validatePan(String pan) throws PaymentValidationException
@@ -92,10 +91,10 @@ PaymentValidationException holds an error code enumeration describing the error.
 
 ```java
 public enum ErrorCode {
-    CARD_EXPIRED,           		// card has expired
-    CARD_EXPIRY_INVALID,           	// incorrect length or non numeric
+    CARD_EXPIRED,                   // card has expired
+    CARD_EXPIRY_INVALID,            // incorrect length or non numeric
     CARD_PAN_INVALID,               // incorrect PAN length or non numeric
-    CARD_PAN_INVALID_LUHN,         	// invalid card PAN or non numeric
+    CARD_PAN_INVALID_LUHN,          // invalid card PAN or non numeric
     CARD_CV2_INVALID,               // incorrect CV2 length
     TRANSACTION_INVALID_AMOUNT,     // no transaction or negative amount specified
     TRANSACTION_INVALID_CURRENCY,   // no currency specified
@@ -103,7 +102,7 @@ public enum ErrorCode {
     INVALID_CREDENTIALS,            // credentials missing (PayPoint token or installation id)
     INVALID_URL,                    // PayPoint server URL not passed in
     INVALID_REQUEST,                // empty PaymentRequest
-    INVALID_TRANSACTION,           	// empty Transaction
+    INVALID_TRANSACTION,            // empty Transaction
     INVALID_CARD                    // empty PaymentCard
 }
 ```
@@ -118,13 +117,13 @@ PayPointCredentials credentials = new PayPointCredentials()
 paymentManager.setCredentials(credentials);
 ```
 
-Next, make the payment by calling makePayment() on the PaymentManager passing the request:
+Next, make the payment by calling makePayment() on the PaymentManager passing the request
 
 ```java
 paymentManager.makePayment(request);
 ```
 
-This call to makePayment() will callback to your app when completed in one of the following functions:
+This call to makePayment() will callback to your app when completed in one of the following functions
 
 ```java
 public void paymentSucceeded(PaymentSuccess paymentSuccess)
@@ -133,7 +132,7 @@ public void paymentFailed(PaymentError paymentError)
 ```
 
 PaymentSuccess - has accessors for transaction id, merchant reference, amount, currency and last four digits of the card number.
-PaymentError – use getKind() to return the type of error. PayPoint errors contain a reasonCode and reasonMessage which can be used to feedback to the user:
+PaymentError – use getKind() to return the type of error. PayPoint errors contain a reasonCode and reasonMessage which can be used to feedback to the user
 
 ```java
 public enum ReasonCode {
@@ -159,8 +158,9 @@ Test Credentials
 
 A test payment server is available at https://ppmobilesdkstub.herokuapp.com/mobileapi - pass this into PaymentManager.setUrl().
 
-A test mechant server is available at https://ppmobilesdkstub.herokuapp.com/merchant/getToken. See Demo app for example of retrieving the merchant token.
+A test merchant server is available at https://ppmobilesdkstub.herokuapp.com/merchant/getToken. See Demo app for example of retrieving the merchant token.
 The following card numbers can be used for testing against the test payment server:
+
 9900 0000 0000 5159 – returns successful authorisation.
 9900 0000 0000 5282 – returns payment declined.
 All other cards will return a server error.
