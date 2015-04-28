@@ -1,4 +1,4 @@
-#PayPoint Android SDK Installation + Integration Instructions
+#PayPoint Advanced Payment SDK
 
 Android Studio (currently tested on 1.1.0)
 
