@@ -15,5 +15,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+
+        // TODO this needs to be changed to a public facing repo
+        maven { url 'http://192.168.6.244:8080/nexus/content/repositories/blue-snapshots' }
     }
 }
