@@ -43,8 +43,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
     // TODO update these URLs when available on MITE
     // local stubs
-    private static final String URL_PAYPOINT = "http://192.168.3.108:5000";
-    private static final String URL_MERCHANT = "http://192.168.3.108:5001/merchant";
+    private static final String URL_PAYPOINT = "http://192.168.3.147:5000";
+    private static final String URL_MERCHANT = "http://192.168.3.147:5001/merchant";
 
     private ShakeableEditText editCardNumber;
     private ShakeableEditText editCardExpiry;
@@ -92,10 +92,26 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         });
 
         // instantiate the PaymentManager in the SDK
-        paymentManager = new PaymentManager(this)
+        paymentManager = PaymentManager.getInstance(this)
                 .setUrl(URL_PAYPOINT);
 
         tokenManager = new MerchantTokenManager();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        paymentManager.lockCallback();
+        paymentManager.unregisterPaymentCallback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        paymentManager.registerPaymentCallback(this);
+        paymentManager.unlockCallback();
     }
 
     /**
@@ -194,7 +210,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // create the payment request
         request = new PaymentRequest()
-                .setCallback(this)
                 .setCard(card)
                 .setTransaction(transaction);
 

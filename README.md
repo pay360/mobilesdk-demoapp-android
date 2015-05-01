@@ -37,14 +37,34 @@ Add the following permissions to your AndroidManifest.xml
 ##Making a Payment
 
 Create a simple activity accepting a card number, expiry and CV2.
-Create an instance of PaymentManager in onCreate()
+Get an instance of PaymentManager in onCreate()
 
 ```java
-paymentManager = new PaymentManager(this)
-        .setUrl(<PAYPOINT_URL>);
+paymentManager = PaymentManager.getInstance(this)
+        .setUrl(URL_PAYPOINT);
 ```
 
 Use EndpointManager.getEndpointUrl() to get the URL for a PayPoint environment.
+
+Register a payment callback handler in OnResume and unregister the callback in OnPause to ensure your activity handles device orientation changes correctly if not locked to a single orientation.
+
+```java
+@Override
+protected void onPause() {
+    super.onPause();
+
+    paymentManager.lockCallback();
+    paymentManager.unregisterPaymentCallback();
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+
+    paymentManager.registerPaymentCallback(this);
+    paymentManager.unlockCallback();
+}
+```
 
 In your payment button handler build a PaymentRequest
 
@@ -61,7 +81,6 @@ Transaction transaction = new Transaction()
 
 // create the payment request
 PaymentRequest request = new PaymentRequest()
-        .setCallback(this)
         .setCard(card)
         .setTransaction(transaction);
 ```
