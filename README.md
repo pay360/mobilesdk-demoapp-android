@@ -27,11 +27,15 @@ dependencies {
 
 In the module gradle build set minSdkVersion to 14 or above.
 
-Add the following permissions to your AndroidManifest.xml
+Add the following to your AndroidManifest.xml
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+<activity android:name="com.paypoint.sdk.library.ThreeDSActivity"
+    android:screenOrientation="portrait">
+</activity>
 ```
 
 ##Making a Payment
@@ -153,6 +157,9 @@ PaymentError – use getKind() to return the type of error. PayPoint errors cont
 
 ```java
 public enum ReasonCode {
+    TRANSACTION_CANCELLED(-4),          // Transaction cancelled by user
+    THREE_D_SECURE_TIMEOUT(-3),         // Timeout waiting for 3D Secure
+    THREE_D_SECURE_ERROR(-2),           // Error occurred processing 3D Secure
     UNKNOWN(-1),
     SUCCESS(0),                         // Operation successful as described
     INVALID(1),                         // Request was not correctly formed
