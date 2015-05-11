@@ -30,6 +30,10 @@
             </intent-filter>
 
         </activity>
+
+        <activity android:name="com.paypoint.sdk.library.ThreeDSActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
