@@ -13,7 +13,6 @@ import com.paypoint.sdk.library.log.Logger;
 import com.paypoint.sdk.library.network.PayPointService;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentSuccess;
-import com.paypoint.sdk.library.payment.request.Request;
 import com.paypoint.sdk.library.payment.response.Response;
 import com.squareup.okhttp.OkHttpClient;
 
