@@ -41,11 +41,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      *
      */
 
-    // TODO update these URLs when available on MITE
-    // local stubs
-    private static final String URL_PAYPOINT = "http://192.168.3.147:5000";
-    private static final String URL_MERCHANT = "http://192.168.3.147:5001/merchant";
-
     private ShakeableEditText editCardNumber;
     private ShakeableEditText editCardExpiry;
     private ShakeableEditText editCardCvv;
@@ -93,7 +88,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // instantiate the PaymentManager in the SDK
         paymentManager = PaymentManager.getInstance(this)
-                .setUrl(URL_PAYPOINT);
+                .setUrl(getString(R.string.url_paypoint));
 
         tokenManager = new MerchantTokenManager();
     }
@@ -221,7 +216,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             onPaymentStarted();
 
             // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
-            tokenManager.getMerchantToken(URL_MERCHANT, this);
+            tokenManager.getMerchantToken(getString(R.string.url_merchant), this);
 
         } catch (PaymentValidationException e) {
             showValidationError(e);
@@ -280,7 +275,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // create the PayPoint credentials to use for the request
         PayPointCredentials credentials = new PayPointCredentials()
-                .setInstallationId("1212312")
+                .setInstallationId(getString(R.string.installation_id))
                 .setToken(token);
 
         paymentManager.setCredentials(credentials);
