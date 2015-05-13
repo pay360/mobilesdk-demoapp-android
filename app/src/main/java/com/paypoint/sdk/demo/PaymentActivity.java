@@ -339,13 +339,13 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
     private void showError(String message) {
         CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message);
-        messageDialog.show(getSupportFragmentManager(), "");
+        messageDialog.show(getFragmentManager(), "");
     }
 
     private void onPaymentStarted() {
         // show a wait dialog - this is just a PayPoint branded example!
         waitDialog = CustomWaitDialog.newInstance("Processing...");
-        waitDialog.show(getSupportFragmentManager(), "");
+        waitDialog.show(getFragmentManager(), "");
     }
 
     private void onPaymentEnded() {

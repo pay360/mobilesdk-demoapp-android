@@ -5,9 +5,9 @@
 package com.paypoint.sdk.demo.widget;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
