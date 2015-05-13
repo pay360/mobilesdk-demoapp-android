@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mite</string>
+    <string name="url_paypoint">http://192.168.3.95:18080</string>
+    <string name="url_merchant">http://192.168.3.95:5000/merchant</string>
+    <string name="installation_id">6100007</string>
+
+</resources>
