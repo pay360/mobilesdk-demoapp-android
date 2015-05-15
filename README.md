@@ -89,7 +89,10 @@ PaymentRequest request = new PaymentRequest()
         .setTransaction(transaction);
 ```
 
-The card holder address can also optionally be created and passed into the request, create an instance of BillingAddress, call the setter methods and pass to the PaymentRequest.
+To authorise a payment call setDeferred(true) on the transaction.
+
+The card holder address, financial services data and customer details can also optionally be created and set on the request.
+
 Your activity will need to implement the PaymentManager.MakePaymentCallback interface.
 
 Validate the payment details handling the PaymentValidationException
