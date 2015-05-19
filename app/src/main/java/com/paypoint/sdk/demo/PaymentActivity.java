@@ -125,10 +125,10 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
                             case CARD_PAN_INVALID:
-                                editCardNumber.setError("Invalid card number");
+                                editCardNumber.setError(getString(R.string.error_invalid_pan));
                                 break;
                             case CARD_PAN_INVALID_LUHN:
-                                editCardNumber.setError("Invalid card number");
+                                editCardNumber.setError(getString(R.string.error_invalid_luhn));
                                 break;
                         }
                     }
@@ -148,10 +148,10 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
                             case CARD_EXPIRED:
-                                editCardExpiry.setError("Card has expired");
+                                editCardExpiry.setError(getString(R.string.error_expired));
                                 break;
                             case CARD_EXPIRY_INVALID:
-                                editCardExpiry.setError("Invalid expiry date");
+                                editCardExpiry.setError(getString(R.string.error_expiry_invalid));
                                 break;
                         }
                     }
@@ -171,7 +171,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
                             case CARD_CV2_INVALID:
-                                editCardCvv.setError("Invalid CVV");
+                                editCardCvv.setError(getString(R.string.error_invalid_cvv));
                                 break;
                         }
                     }
@@ -232,29 +232,25 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         switch (e.getErrorCode()) {
             case CARD_EXPIRED:
-                errorMessage = "Card has expired";
+                errorMessage = getString(R.string.error_expired);
                 break;
             case CARD_EXPIRY_INVALID:
-                errorMessage = "Invalid expiry date";
+                errorMessage = getString(R.string.error_expiry_invalid);
                 break;
             case CARD_PAN_INVALID:
-                errorMessage = "Invalid card number";
+                errorMessage = getString(R.string.error_invalid_pan);
                 break;
             case CARD_PAN_INVALID_LUHN:
-                errorMessage = "Invalid card number";
+                errorMessage = getString(R.string.error_invalid_luhn);
                 break;
             case CARD_CV2_INVALID:
-                errorMessage = "Invalid CV2 number";
-                break;
-            case TRANSACTION_INVALID_AMOUNT:
-                errorMessage = "Invalid transaction amount";
-                break;
-            case TRANSACTION_INVALID_CURRENCY:
-                errorMessage = "Invalid transaction currency";
+                errorMessage = getString(R.string.error_invalid_cvv);
                 break;
             case NETWORK_NO_CONNECTION:
-                errorMessage = "No network connection";
+                errorMessage = getString(R.string.error_no_network);
                 break;
+            case TRANSACTION_INVALID_AMOUNT:
+            case TRANSACTION_INVALID_CURRENCY:
             case INVALID_CREDENTIALS:
             case INVALID_CARD:
             case INVALID_REQUEST:
