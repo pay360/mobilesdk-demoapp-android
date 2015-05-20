@@ -19,17 +19,14 @@ android {
     }
 
     productFlavors {
-        jenkins {
-            applicationId "com.paypoint.sdk.demo"
-        }
-        local {
-            applicationId "com.paypoint.sdk.demo"
-        }
-        mite {
-            applicationId "com.paypoint.sdk.demo.mite"
-        }
-        liam {
-            applicationId "com.paypoint.sdk.demo"
+        if (project.hasProperty('jenkins')) {
+            jenkins {
+                applicationId "com.paypoint.sdk.demo"
+            }
+        } else {
+            local {
+                applicationId "com.paypoint.sdk.demo"
+            }
         }
     }
 
@@ -49,23 +46,16 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.0.0'
 
-    localCompile(name:'paypoint_sdk-0.0.1', ext:'aar')
+    if (project.hasProperty('jenkins')) {
+        jenkinsCompile 'net.paypoint:mobilesdk-android:+'
+        jenkinsCompile 'com.facebook.rebound:rebound:0.3.7'
+    } else {
+        localCompile(name: 'paypoint_sdk-0.0.1', ext: 'aar')
 
-    localCompile 'com.squareup.retrofit:retrofit:1.9.0'
-    localCompile 'com.google.code.gson:gson:2.2.4'
-    localCompile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    localCompile 'com.squareup.okhttp:okhttp:2.0.0'
-    localCompile 'com.facebook.rebound:rebound:0.3.7'
-
-    miteCompile(name:'paypoint_sdk-0.0.1', ext:'aar')
-
-    miteCompile 'com.squareup.retrofit:retrofit:1.9.0'
-    miteCompile 'com.google.code.gson:gson:2.2.4'
-    miteCompile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    miteCompile 'com.squareup.okhttp:okhttp:2.0.0'
-    miteCompile 'com.facebook.rebound:rebound:0.3.7'
-
-    jenkinsCompile 'net.paypoint:mobilesdk-android:+'
-
-    jenkinsCompile 'com.facebook.rebound:rebound:0.3.7'
+        localCompile 'com.squareup.retrofit:retrofit:1.9.0'
+        localCompile 'com.google.code.gson:gson:2.2.4'
+        localCompile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+        localCompile 'com.squareup.okhttp:okhttp:2.0.0'
+        localCompile 'com.facebook.rebound:rebound:0.3.7'
+    }
 }
