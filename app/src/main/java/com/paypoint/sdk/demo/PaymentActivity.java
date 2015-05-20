@@ -41,11 +41,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
      *
      */
 
-    // TODO update these URLs when available on MITE
-    // local stubs
-    private static final String URL_PAYPOINT = "http://192.168.3.108:5000";
-    private static final String URL_MERCHANT = "http://192.168.3.108:5001/merchant";
-
     private ShakeableEditText editCardNumber;
     private ShakeableEditText editCardExpiry;
     private ShakeableEditText editCardCvv;
@@ -92,10 +87,26 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         });
 
         // instantiate the PaymentManager in the SDK
-        paymentManager = new PaymentManager(this)
-                .setUrl(URL_PAYPOINT);
+        paymentManager = PaymentManager.getInstance(this)
+                .setUrl(getString(R.string.url_paypoint));
 
         tokenManager = new MerchantTokenManager();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        paymentManager.lockCallback();
+        paymentManager.unregisterPaymentCallback();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        paymentManager.registerPaymentCallback(this);
+        paymentManager.unlockCallback();
     }
 
     /**
@@ -114,10 +125,10 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
                             case CARD_PAN_INVALID:
-                                editCardNumber.setError("Invalid card number");
+                                editCardNumber.setError(getString(R.string.error_invalid_pan));
                                 break;
                             case CARD_PAN_INVALID_LUHN:
-                                editCardNumber.setError("Invalid card number");
+                                editCardNumber.setError(getString(R.string.error_invalid_luhn));
                                 break;
                         }
                     }
@@ -137,10 +148,10 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
                             case CARD_EXPIRED:
-                                editCardExpiry.setError("Card has expired");
+                                editCardExpiry.setError(getString(R.string.error_expired));
                                 break;
                             case CARD_EXPIRY_INVALID:
-                                editCardExpiry.setError("Invalid expiry date");
+                                editCardExpiry.setError(getString(R.string.error_expiry_invalid));
                                 break;
                         }
                     }
@@ -160,7 +171,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     } catch (PaymentValidationException e) {
                         switch (e.getErrorCode()) {
                             case CARD_CV2_INVALID:
-                                editCardCvv.setError("Invalid CVV");
+                                editCardCvv.setError(getString(R.string.error_invalid_cvv));
                                 break;
                         }
                     }
@@ -194,7 +205,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // create the payment request
         request = new PaymentRequest()
-                .setCallback(this)
                 .setCard(card)
                 .setTransaction(transaction);
 
@@ -206,7 +216,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             onPaymentStarted();
 
             // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
-            tokenManager.getMerchantToken(URL_MERCHANT, this);
+            tokenManager.getMerchantToken(getString(R.string.url_merchant), this);
 
         } catch (PaymentValidationException e) {
             showValidationError(e);
@@ -222,29 +232,25 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         switch (e.getErrorCode()) {
             case CARD_EXPIRED:
-                errorMessage = "Card has expired";
+                errorMessage = getString(R.string.error_expired);
                 break;
             case CARD_EXPIRY_INVALID:
-                errorMessage = "Invalid expiry date";
+                errorMessage = getString(R.string.error_expiry_invalid);
                 break;
             case CARD_PAN_INVALID:
-                errorMessage = "Invalid card number";
+                errorMessage = getString(R.string.error_invalid_pan);
                 break;
             case CARD_PAN_INVALID_LUHN:
-                errorMessage = "Invalid card number";
+                errorMessage = getString(R.string.error_invalid_luhn);
                 break;
             case CARD_CV2_INVALID:
-                errorMessage = "Invalid CV2 number";
-                break;
-            case TRANSACTION_INVALID_AMOUNT:
-                errorMessage = "Invalid transaction amount";
-                break;
-            case TRANSACTION_INVALID_CURRENCY:
-                errorMessage = "Invalid transaction currency";
+                errorMessage = getString(R.string.error_invalid_cvv);
                 break;
             case NETWORK_NO_CONNECTION:
-                errorMessage = "No network connection";
+                errorMessage = getString(R.string.error_no_network);
                 break;
+            case TRANSACTION_INVALID_AMOUNT:
+            case TRANSACTION_INVALID_CURRENCY:
             case INVALID_CREDENTIALS:
             case INVALID_CARD:
             case INVALID_REQUEST:
@@ -265,7 +271,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // create the PayPoint credentials to use for the request
         PayPointCredentials credentials = new PayPointCredentials()
-                .setInstallationId("1212312")
+                .setInstallationId(getString(R.string.installation_id))
                 .setToken(token);
 
         paymentManager.setCredentials(credentials);
@@ -329,13 +335,13 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
     private void showError(String message) {
         CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message);
-        messageDialog.show(getSupportFragmentManager(), "");
+        messageDialog.show(getFragmentManager(), "");
     }
 
     private void onPaymentStarted() {
         // show a wait dialog - this is just a PayPoint branded example!
         waitDialog = CustomWaitDialog.newInstance("Processing...");
-        waitDialog.show(getSupportFragmentManager(), "");
+        waitDialog.show(getFragmentManager(), "");
     }
 
     private void onPaymentEnded() {

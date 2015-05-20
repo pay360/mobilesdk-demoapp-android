@@ -27,24 +27,48 @@ dependencies {
 
 In the module gradle build set minSdkVersion to 14 or above.
 
-Add the following permissions to your AndroidManifest.xml
+Add the following to your AndroidManifest.xml
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+<activity android:name="com.paypoint.sdk.library.ThreeDSActivity"
+    android:screenOrientation="portrait">
+</activity>
 ```
 
 ##Making a Payment
 
 Create a simple activity accepting a card number, expiry and CV2.
-Create an instance of PaymentManager in onCreate()
+Get an instance of PaymentManager in onCreate()
 
 ```java
-paymentManager = new PaymentManager(this)
-        .setUrl(<PAYPOINT_URL>);
+paymentManager = PaymentManager.getInstance(this)
+        .setUrl(URL_PAYPOINT);
 ```
 
 Use EndpointManager.getEndpointUrl() to get the URL for a PayPoint environment.
+
+Register a payment callback handler in OnResume and unregister the callback in OnPause to ensure your activity handles device orientation changes correctly if not locked to a single orientation.
+
+```java
+@Override
+protected void onPause() {
+    super.onPause();
+
+    paymentManager.lockCallback();
+    paymentManager.unregisterPaymentCallback();
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+
+    paymentManager.registerPaymentCallback(this);
+    paymentManager.unlockCallback();
+}
+```
 
 In your payment button handler build a PaymentRequest
 
@@ -61,12 +85,14 @@ Transaction transaction = new Transaction()
 
 // create the payment request
 PaymentRequest request = new PaymentRequest()
-        .setCallback(this)
         .setCard(card)
         .setTransaction(transaction);
 ```
 
-The card holder address can also optionally be created and passed into the request, create an instance of BillingAddress, call the setter methods and pass to the PaymentRequest.
+To authorise a payment call setDeferred(true) on the transaction.
+
+The card holder address, financial services data and customer details can also optionally be created and set on the request.
+
 Your activity will need to implement the PaymentManager.MakePaymentCallback interface.
 
 Validate the payment details handling the PaymentValidationException
@@ -134,6 +160,9 @@ PaymentError – use getKind() to return the type of error. PayPoint errors cont
 
 ```java
 public enum ReasonCode {
+    TRANSACTION_CANCELLED(-4),          // Transaction cancelled by user
+    THREE_D_SECURE_TIMEOUT(-3),         // Timeout waiting for 3D Secure
+    THREE_D_SECURE_ERROR(-2),           // Error occurred processing 3D Secure
     UNKNOWN(-1),
     SUCCESS(0),                         // Operation successful as described
     INVALID(1),                         // Request was not correctly formed

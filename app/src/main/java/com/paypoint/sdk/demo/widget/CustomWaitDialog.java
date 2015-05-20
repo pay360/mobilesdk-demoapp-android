@@ -5,8 +5,8 @@
 package com.paypoint.sdk.demo.widget;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;

@@ -6,24 +6,13 @@ package com.paypoint.sdk.demo.merchant;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 import com.paypoint.sdk.library.log.Logger;
-import com.paypoint.sdk.library.network.PayPointService;
-import com.paypoint.sdk.library.payment.PaymentError;
-import com.paypoint.sdk.library.payment.PaymentSuccess;
-import com.paypoint.sdk.library.payment.request.Request;
-import com.paypoint.sdk.library.payment.response.Response;
-import com.squareup.okhttp.OkHttpClient;
-
-import java.util.concurrent.TimeUnit;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
-import retrofit.converter.GsonConverter;
 import retrofit.http.POST;
 
 /**
