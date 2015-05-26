@@ -113,24 +113,6 @@ public static void validateCv2(String cv2) throws PaymentValidationException
 
 PaymentValidationException holds an error code enumeration describing the error.
 
-```java
-public enum ErrorCode {
-    CARD_EXPIRED,                   // card has expired
-    CARD_EXPIRY_INVALID,            // incorrect length or non numeric
-    CARD_PAN_INVALID,               // incorrect PAN length or non numeric
-    CARD_PAN_INVALID_LUHN,          // invalid card PAN or non numeric
-    CARD_CV2_INVALID,               // incorrect CV2 length
-    TRANSACTION_INVALID_AMOUNT,     // no transaction or negative amount specified
-    TRANSACTION_INVALID_CURRENCY,   // no currency specified
-    NETWORK_NO_CONNECTION,          // device has no network connection
-    INVALID_CREDENTIALS,            // credentials missing (PayPoint token or installation id)
-    INVALID_URL,                    // PayPoint server URL not passed in
-    INVALID_REQUEST,                // empty PaymentRequest
-    INVALID_TRANSACTION,            // empty Transaction
-    INVALID_CARD                    // empty PaymentCard
-}
-```
-
 If the PaymentRequest validates successfully i.e. does not throw a PaymentValidationException, your app should then communicate with your server to request a PayPoint authorisation token. This token, when returned, should be used to create a PayPointCredentials object which should then be passed to the PaymentManager
 
 ```java
@@ -159,20 +141,6 @@ PaymentSuccess - has accessors for transaction id, merchant reference, amount, c
 PaymentError – use getKind() to return the type of error. PayPoint errors contain a reasonCode and reasonMessage which can be used to feedback to the user
 
 ```java
-public enum ReasonCode {
-    TRANSACTION_CANCELLED(-4),          // Transaction cancelled by user
-    THREE_D_SECURE_TIMEOUT(-3),         // Timeout waiting for 3D Secure
-    THREE_D_SECURE_ERROR(-2),           // Error occurred processing 3D Secure
-    UNKNOWN(-1),
-    SUCCESS(0),                         // Operation successful as described
-    INVALID(1),                         // Request was not correctly formed
-    AUTHENTICATION_FAILED(2),           // The presented API token was not valid, or the wrong type of authentication was used
-    CLIENT_TOKEN_EXPIRED(3),            // Get a new token
-    UNAUTHORISED_REQUEST(4),            // The token was valid, but does not grant you access to use the specified feature
-    TRANSACTION_FAILED_TO_PROCESS(5),   // The transaction was successfully submitted but failed to be processed correctly.
-    SERVER_ERROR(6);                   	// An internal server error occurred at paypoint
-}
-
 if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
     String reasonMessage = paymentError.getPayPointError().getReasonMessage();
     PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
