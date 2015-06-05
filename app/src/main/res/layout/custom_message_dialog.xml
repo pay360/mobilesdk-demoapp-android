@@ -24,17 +24,40 @@
         android:textColor="@color/paypoint_blue"
         android:textSize="16sp" />
 
-    <Button
-        android:background="@drawable/button_bg"
-        android:id="@+id/buttonOK"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="OK"
-        android:textColor="@drawable/button_text"
-        style="@style/Text.Normal"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:layout_margin="10dp" />
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:background="@drawable/button_bg"
+            android:id="@+id/buttonClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Close"
+            android:textColor="@drawable/button_text"
+            style="@style/Text.Normal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:background="@drawable/button_bg"
+            android:id="@+id/buttonGetStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get\nStatus"
+            android:textColor="@drawable/button_text"
+            style="@style/Text.Normal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:layout_toRightOf="@+id/buttonClose"/>
+
+    </RelativeLayout>
 </LinearLayout>

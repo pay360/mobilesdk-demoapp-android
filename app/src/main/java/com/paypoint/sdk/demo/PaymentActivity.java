@@ -21,6 +21,7 @@ import com.paypoint.sdk.demo.widget.ShakeableEditText;
 import com.paypoint.sdk.library.exception.InvalidCredentialsException;
 import com.paypoint.sdk.library.exception.PaymentValidationException;
 import com.paypoint.sdk.library.exception.TransactionInProgressException;
+import com.paypoint.sdk.library.exception.TransactionSuspendedFor3DSException;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
@@ -332,6 +333,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         onPaymentEnded();
 
         String errorMessage = "";
+        boolean getStatus = false;
 
         if (paymentError != null) {
             if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
@@ -343,6 +345,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 switch (reasonCode) {
 
                     case TRANSACTION_TIMED_OUT:
+                        getStatus = true;
                         errorMessage = "Transaction timed out wait for a response. Call getPaymentStatus()";
                         break;
 
@@ -397,11 +400,28 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             }
         }
 
-        showError("Payment Failed: \n" + errorMessage);
+        showError("Payment Failed: \n" + errorMessage, getStatus);
+    }
+
+    public void onGetPaymentStatus() {
+        try {
+            paymentManager.getPaymentStatus(operationId);
+            onPaymentStarted();
+        } catch (InvalidCredentialsException e) {
+            showError("Developer error - check arguments to makePayment");
+        } catch (TransactionSuspendedFor3DSException e) {
+            showError("Payment suspending for 3D Secure");
+        } catch (TransactionInProgressException e) {
+            showError("Transaction is in progress, please wait for callback");
+        }
     }
 
     private void showError(String message) {
-        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message);
+        showError(message, false);
+    }
+
+    private void showError(String message, boolean getStatus) {
+        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message, getStatus);
         messageDialog.show(getFragmentManager(), "");
     }
 
