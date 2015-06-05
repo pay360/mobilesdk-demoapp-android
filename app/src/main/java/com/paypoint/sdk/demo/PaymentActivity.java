@@ -4,6 +4,7 @@
 
 package com.paypoint.sdk.demo;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -17,7 +18,9 @@ import com.paypoint.sdk.demo.utils.FontUtils;
 import com.paypoint.sdk.demo.widget.CustomMessageDialog;
 import com.paypoint.sdk.demo.widget.CustomWaitDialog;
 import com.paypoint.sdk.demo.widget.ShakeableEditText;
+import com.paypoint.sdk.library.exception.InvalidCredentialsException;
 import com.paypoint.sdk.library.exception.PaymentValidationException;
+import com.paypoint.sdk.library.exception.TransactionInProgressException;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
@@ -45,10 +48,11 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     private ShakeableEditText editCardExpiry;
     private ShakeableEditText editCardCvv;
     private Button buttonPay;
-    private CustomWaitDialog waitDialog;
+
     private PaymentManager paymentManager;
     private MerchantTokenManager tokenManager;
     private PaymentRequest request;
+    private String operationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +220,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             onPaymentStarted();
 
             // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
-            tokenManager.getMerchantToken(getString(R.string.url_merchant), this);
+            tokenManager.getMerchantToken(getString(R.string.url_merchant), getString(R.string.installation_id), this);
 
         } catch (PaymentValidationException e) {
             showValidationError(e);
@@ -277,10 +281,19 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         paymentManager.setCredentials(credentials);
 
         try {
-            // now make the payment
-            paymentManager.makePayment(request);
+            // now make the payment - store the operationId returned, this can be used to check the
+            // state of a transaction
+            operationId = paymentManager.makePayment(request);
         } catch (PaymentValidationException e) {
             showValidationError(e);
+        } catch (TransactionInProgressException e) {
+            onPaymentEnded();
+
+            showError("Payment currently in progress");
+        } catch (InvalidCredentialsException e) {
+            onPaymentEnded();
+
+            showError("Developer error - check arguments to makePayment");
         }
     }
 
@@ -318,19 +331,73 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     public void paymentFailed(PaymentError paymentError) {
         onPaymentEnded();
 
-        String reasonMessage = "";
+        String errorMessage = "";
 
         if (paymentError != null) {
             if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
-                reasonMessage = paymentError.getPayPointError().getReasonMessage();
+                // getReasonMessage() should be used for debugging only - please check PaymentError.ReasonCode
 
                 // PayPointError also provides an error enum
                 PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
+
+                switch (reasonCode) {
+
+                    case TRANSACTION_TIMED_OUT:
+                        errorMessage = "Transaction timed out wait for a response. Call getPaymentStatus()";
+                        break;
+
+                    case TRANSACTION_CANCELLED:
+                        errorMessage = "Transaction cancelled by the user";
+                        break;
+
+                    case THREE_D_SECURE_TIMEOUT:
+                        errorMessage = "Transaction timed out waiting for user to complete 3D Secure";
+                        break;
+
+                    case THREE_D_SECURE_ERROR:
+                        errorMessage = "An error occurred handling 3D Secure";
+                        break;
+
+                    case UNKNOWN:
+                        errorMessage = "Something went wrong, we don't know what";
+                        break;
+
+                    case INVALID:
+                        errorMessage = "Something went wrong, we don't know what";
+                        break;
+
+                    case TRANSACTION_DECLINED:
+                        errorMessage = "The transaction was declined";
+                        break;
+
+                    case SERVER_ERROR:
+                        // TODO do we need to check status here
+                        errorMessage = "An internal server error occurred";
+                        break;
+
+                    case TRANSACTION_NOT_FOUND:
+                        errorMessage = "The transaction not found on the server, payment not taken";
+                        break;
+
+                    case AUTHENTICATION_FAILED:
+                        errorMessage = "The merchant token is incorrect";
+                        break;
+
+                    case CLIENT_TOKEN_EXPIRED:
+                        errorMessage = "The merchant token has expired";
+                        break;
+
+                    case UNAUTHORISED_REQUEST:
+                        errorMessage = "The merchant token does not grant you access to making a payment";
+                        break;
+
+                }
             } else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
-                reasonMessage = "Network error";
+                errorMessage = "Network error - please retry";
             }
         }
-        showError("Payment Failed: \n" + reasonMessage);
+
+        showError("Payment Failed: \n" + errorMessage);
     }
 
     private void showError(String message) {
@@ -340,14 +407,16 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
     private void onPaymentStarted() {
         // show a wait dialog - this is just a PayPoint branded example!
-        waitDialog = CustomWaitDialog.newInstance("Processing...");
-        waitDialog.show(getFragmentManager(), "");
+        CustomWaitDialog waitDialog = CustomWaitDialog.newInstance("Processing...");
+        waitDialog.show(getFragmentManager(), "WAIT_DIALOG");
     }
 
     private void onPaymentEnded() {
+
+        Fragment waitDialog = getFragmentManager().findFragmentByTag("WAIT_DIALOG");
+
         if (waitDialog != null) {
-            waitDialog.dismissAllowingStateLoss();
-            waitDialog = null;
+            getFragmentManager().beginTransaction().remove(waitDialog).commitAllowingStateLoss();
         }
     }
 }
