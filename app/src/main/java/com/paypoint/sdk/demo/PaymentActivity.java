@@ -200,7 +200,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         PaymentCard card = new PaymentCard()
                 .setPan(cardNumber)
                 .setExpiryDate(cardExpiry)
-                .setCv2(cardCvv);
+                .setCv2(cardCvv)
+                .setCardHolderName("Mr A Smith");
 
         // currency and amount hardcoded in this instance for demo
         Transaction transaction = new Transaction()
@@ -332,80 +333,81 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     public void paymentFailed(PaymentError paymentError) {
         onPaymentEnded();
 
-        String errorMessage = "";
-        boolean getStatus = false;
+        String errorMessage = "Unexpected error";
+        boolean isIndeterminate = true;
 
         if (paymentError != null) {
-            if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
-                // getReasonMessage() should be used for debugging only - please check PaymentError.ReasonCode
+            // getReasonMessage() should be used for debugging only - please check PaymentError.ReasonCode
 
-                // PayPointError also provides an error enum
-                PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
+            // PayPointError also provides an error enum
+            PaymentError.ReasonCode reasonCode = paymentError.getReasonCode();
 
-                switch (reasonCode) {
+            // isIndeterminate = true when not payment has reached server but not sure if success or declined
+            // should then call PaymentManager.getTransactionStatus
+            isIndeterminate = reasonCode.isIndeterminate();
 
-                    case TRANSACTION_TIMED_OUT:
-                        getStatus = true;
-                        errorMessage = "Transaction timed out wait for a response. Call getPaymentStatus()";
-                        break;
+            switch (reasonCode) {
 
-                    case TRANSACTION_CANCELLED:
-                        errorMessage = "Transaction cancelled by the user";
-                        break;
+                case NETWORK_ERROR_DURING_PROCESSING:
+                    break;
 
-                    case THREE_D_SECURE_TIMEOUT:
-                        errorMessage = "Transaction timed out waiting for user to complete 3D Secure";
-                        break;
+                case NETWORK_NO_CONNECTION:
+                    errorMessage = "Network error - please retry";
+                    break;
 
-                    case THREE_D_SECURE_ERROR:
-                        errorMessage = "An error occurred handling 3D Secure";
-                        break;
+                case TRANSACTION_TIMED_OUT:
+                    errorMessage = "Transaction timed out wait for a response. Call getPaymentStatus()";
+                    break;
 
-                    case UNKNOWN:
-                        errorMessage = "Something went wrong, we don't know what";
-                        break;
+                case TRANSACTION_CANCELLED_BY_USER:
+                    errorMessage = "Transaction cancelled by the user";
+                    break;
 
-                    case INVALID:
-                        errorMessage = "Something went wrong, we don't know what";
-                        break;
+                case UNEXPECTED:
+                    errorMessage = "Something went wrong, we don't know what";
+                    break;
 
-                    case TRANSACTION_DECLINED:
-                        errorMessage = "The transaction was declined";
-                        break;
+                case INVALID:
+                    errorMessage = "Something went wrong, we don't know what";
+                    break;
 
-                    case SERVER_ERROR:
-                        // TODO do we need to check status here
-                        errorMessage = "An internal server error occurred";
-                        break;
+                case TRANSACTION_DECLINED:
+                    errorMessage = "The transaction was declined";
+                    break;
 
-                    case TRANSACTION_NOT_FOUND:
-                        errorMessage = "The transaction not found on the server, payment not taken";
-                        break;
+                case SERVER_ERROR:
+                    // TODO do we need to check status here
+                    errorMessage = "An internal server error occurred";
+                    break;
 
-                    case AUTHENTICATION_FAILED:
-                        errorMessage = "The merchant token is incorrect";
-                        break;
+                case TRANSACTION_NOT_FOUND:
+                    errorMessage = "The transaction failed";
+                    break;
 
-                    case CLIENT_TOKEN_EXPIRED:
-                        errorMessage = "The merchant token has expired";
-                        break;
+                case AUTHENTICATION_FAILED:
+                    errorMessage = "The merchant token is incorrect";
+                    break;
 
-                    case UNAUTHORISED_REQUEST:
-                        errorMessage = "The merchant token does not grant you access to making a payment";
-                        break;
+                case CLIENT_TOKEN_EXPIRED:
+                    errorMessage = "The merchant token has expired";
+                    break;
 
-                }
-            } else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
-                errorMessage = "Network error - please retry";
+                case UNAUTHORISED_REQUEST:
+                    errorMessage = "The merchant token does not grant you access to making a payment";
+                    break;
+
             }
         }
 
-        showError("Payment Failed: \n" + errorMessage, getStatus);
+        showError("Payment Failed: \n" + errorMessage, isIndeterminate);
     }
 
+    /**
+     * Callback if getStatus button clicked
+     */
     public void onGetPaymentStatus() {
         try {
-            paymentManager.getPaymentStatus(operationId);
+            paymentManager.getTransactionStatus(operationId);
             onPaymentStarted();
         } catch (InvalidCredentialsException e) {
             showError("Developer error - check arguments to makePayment");
@@ -420,8 +422,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         showError(message, false);
     }
 
-    private void showError(String message, boolean getStatus) {
-        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message, getStatus);
+    private void showError(String message, boolean retry) {
+        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message, retry);
         messageDialog.show(getFragmentManager(), "");
     }
 

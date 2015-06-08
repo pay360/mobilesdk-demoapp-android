@@ -54,8 +54,9 @@ dependencies {
 
         localCompile 'com.squareup.retrofit:retrofit:1.9.0'
         localCompile 'com.google.code.gson:gson:2.2.4'
-        localCompile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-        localCompile 'com.squareup.okhttp:okhttp:2.0.0'
+        localCompile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
+        localCompile 'com.squareup.okhttp:okhttp:2.4.0'
+        localCompile 'com.netflix.rxjava:rxjava-android:0.20.7'
         localCompile 'com.facebook.rebound:rebound:0.3.7'
     }
 }

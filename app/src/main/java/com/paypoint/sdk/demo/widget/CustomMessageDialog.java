@@ -25,13 +25,13 @@ public class CustomMessageDialog extends DialogFragment {
 
     private static final String ARG_TITLE = "com.paypoint.sdk.demo.widget.CustomMessageDialog.ARG_TITLE";
     private static final String ARG_MESSAGE = "com.paypoint.sdk.demo.widget.CustomMessageDialog.ARG_MESSAGE";
-    private static final String ARG_GET_STATUS = "com.paypoint.sdk.demo.widget.CustomMessageDialog.ARG_GET_STATUS";
+    private static final String ARG_RETRY = "com.paypoint.sdk.demo.widget.CustomMessageDialog.ARG_RETRY";
 
-    public static CustomMessageDialog newInstance(String title, String message, boolean getStatus) {
+    public static CustomMessageDialog newInstance(String title, String message, boolean retry) {
         Bundle args = new Bundle();
         args.putString(ARG_TITLE, title);
         args.putString(ARG_MESSAGE, message);
-        args.putBoolean(ARG_GET_STATUS, getStatus);
+        args.putBoolean(ARG_RETRY, retry);
 
         CustomMessageDialog fragment = new CustomMessageDialog();
         fragment.setArguments(args);
@@ -66,13 +66,13 @@ public class CustomMessageDialog extends DialogFragment {
 
         });
 
-        Button getStatusButton = (Button) d.findViewById(R.id.buttonGetStatus);
+        Button retryButton = (Button) d.findViewById(R.id.buttonRetry);
 
-        if (getArguments().getBoolean(ARG_GET_STATUS, false)) {
-            getStatusButton.setVisibility(View.VISIBLE);
+        if (getArguments().getBoolean(ARG_RETRY, false)) {
+            retryButton.setVisibility(View.VISIBLE);
         }
 
-        getStatusButton.setOnClickListener(new View.OnClickListener() {
+        retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
