@@ -334,29 +334,30 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         onPaymentEnded();
 
         String errorMessage = "Unexpected error";
-        boolean isIndeterminate = true;
+        boolean checkStatus = true;
 
         if (paymentError != null) {
-            // getReasonMessage() should be used for debugging only - please check PaymentError.ReasonCode
+            // paymentError.getReasonMessage() should be used for debugging only
 
             // PayPointError also provides an error enum
             PaymentError.ReasonCode reasonCode = paymentError.getReasonCode();
 
             // isIndeterminate = true when not payment has reached server but not sure if success or declined
             // should then call PaymentManager.getTransactionStatus
-            isIndeterminate = reasonCode.isIndeterminate();
+            checkStatus = reasonCode.shouldCheckStatus();
 
             switch (reasonCode) {
 
                 case NETWORK_ERROR_DURING_PROCESSING:
+                    errorMessage = "Network error during transaction";
                     break;
 
                 case NETWORK_NO_CONNECTION:
-                    errorMessage = "Network error - please retry";
+                    errorMessage = "No network connection - please retry";
                     break;
 
                 case TRANSACTION_TIMED_OUT:
-                    errorMessage = "Transaction timed out wait for a response. Call getPaymentStatus()";
+                    errorMessage = "Transaction timed out waiting for a response";
                     break;
 
                 case TRANSACTION_CANCELLED_BY_USER:
@@ -368,7 +369,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     break;
 
                 case INVALID:
-                    errorMessage = "Something went wrong, we don't know what";
+                    errorMessage = "Invalid request sent to the server";
                     break;
 
                 case TRANSACTION_DECLINED:
@@ -376,7 +377,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     break;
 
                 case SERVER_ERROR:
-                    // TODO do we need to check status here
                     errorMessage = "An internal server error occurred";
                     break;
 
@@ -399,7 +399,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             }
         }
 
-        showError("Payment Failed: \n" + errorMessage, isIndeterminate);
+        showError("Payment Failed: \n" + errorMessage, checkStatus);
     }
 
     /**
@@ -422,8 +422,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         showError(message, false);
     }
 
-    private void showError(String message, boolean retry) {
-        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message, retry);
+    private void showError(String message, boolean checkStatus) {
+        CustomMessageDialog messageDialog = CustomMessageDialog.newInstance("Error", message, checkStatus);
         messageDialog.show(getFragmentManager(), "");
     }
 
