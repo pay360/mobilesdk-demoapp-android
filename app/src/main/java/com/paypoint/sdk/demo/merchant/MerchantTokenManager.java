@@ -13,7 +13,9 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.android.AndroidLog;
+import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 
 /**
  * Handles reading of PayPoint merchant token - when integrating this will be the responsibility
@@ -32,8 +34,9 @@ public class MerchantTokenManager {
 
     // REST service to get merchant token
     public interface MerchantTokenService {
-        @POST("/getToken")
-        void getMerchantToken(Callback<TokenResponse> callback);
+        @GET("/getToken/{installationId}")
+        void getMerchantToken(@Path("installationId") String installationId,
+                              Callback<TokenResponse> callback);
     }
 
     private MerchantTokenService getService(String serverUrl) {
@@ -61,10 +64,10 @@ public class MerchantTokenManager {
      * merchant to implement
      * @param serverUrl
      */
-    public void getMerchantToken(String serverUrl, final GetTokenCallback callback) {
+    public void getMerchantToken(String serverUrl, String installationId, final GetTokenCallback callback) {
         MerchantTokenService service = getService(serverUrl);
 
-        service.getMerchantToken(new Callback<TokenResponse>() {
+        service.getMerchantToken(installationId, new Callback<TokenResponse>() {
             @Override
             public void success(TokenResponse response, retrofit.client.Response response2) {
                 if (callback != null) {

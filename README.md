@@ -6,22 +6,12 @@ Requires at minimum Android 4.0 (API level 14)
 
 Copy the PayPoint SDK library paypoint_sdk-x.x.x.aar into the module libs folder.
 
-Add the following to your module gradle build
+Add the following to your module dependencies
 
 ```groovy
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
 
-dependencies {
-    compile(name:'paypoint_sdk-x.x.x', ext:'aar')
-
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    compile 'com.squareup.okhttp:okhttp:2.0.0'
+// TODO use correct Maven Repo when known
+    compile('net.paypoint:mobilesdk-android:x.y.z')
 }
 ```
 
@@ -74,13 +64,14 @@ In your payment button handler build a PaymentRequest
 
 ```java
 PaymentCard card = new PaymentCard()
-        .setPan(cardNumber)
-        .setExpiryDate(cardExpiry)
-        .setCv2(cardCv2);
+        .setPan("2470456729287342")
+        .setExpiryDate("0116")
+        .setCv2("457")
+        .setCardHolderName("Mr A Smith");
 
 Transaction transaction = new Transaction()
-        .setCurrency(currency) // e.g. “GBP”
-        .setAmount(amount)
+        .setCurrency(“GBP”)
+        .setAmount("10.54")
         .setMerchantReference(merchantRef); // up to merchant to create a unique merchantRef
 
 // create the payment request
@@ -89,9 +80,9 @@ PaymentRequest request = new PaymentRequest()
         .setTransaction(transaction);
 ```
 
-To authorise a payment call setDeferred(true) on the transaction.
+To submit an authorisation instead of a payment call setDeferred(true) on the transaction.
 
-The card holder address, financial services data and customer details can also optionally be created and set on the request.
+The cardholder address, financial services data and customer details can also optionally be created and set on the request.
 
 Your activity will need to implement the PaymentManager.MakePaymentCallback interface.
 
@@ -113,24 +104,6 @@ public static void validateCv2(String cv2) throws PaymentValidationException
 
 PaymentValidationException holds an error code enumeration describing the error.
 
-```java
-public enum ErrorCode {
-    CARD_EXPIRED,                   // card has expired
-    CARD_EXPIRY_INVALID,            // incorrect length or non numeric
-    CARD_PAN_INVALID,               // incorrect PAN length or non numeric
-    CARD_PAN_INVALID_LUHN,          // invalid card PAN or non numeric
-    CARD_CV2_INVALID,               // incorrect CV2 length
-    TRANSACTION_INVALID_AMOUNT,     // no transaction or negative amount specified
-    TRANSACTION_INVALID_CURRENCY,   // no currency specified
-    NETWORK_NO_CONNECTION,          // device has no network connection
-    INVALID_CREDENTIALS,            // credentials missing (PayPoint token or installation id)
-    INVALID_URL,                    // PayPoint server URL not passed in
-    INVALID_REQUEST,                // empty PaymentRequest
-    INVALID_TRANSACTION,            // empty Transaction
-    INVALID_CARD                    // empty PaymentCard
-}
-```
-
 If the PaymentRequest validates successfully i.e. does not throw a PaymentValidationException, your app should then communicate with your server to request a PayPoint authorisation token. This token, when returned, should be used to create a PayPointCredentials object which should then be passed to the PaymentManager
 
 ```java
@@ -141,10 +114,10 @@ PayPointCredentials credentials = new PayPointCredentials()
 paymentManager.setCredentials(credentials);
 ```
 
-Next, make the payment by calling makePayment() on the PaymentManager passing the request
+Next, make the payment by calling makePayment() on the PaymentManager passing the request storing the returned operation identifier should you wish to retrieve the status of the transaction at a later point, see Error Handling.
 
 ```java
-paymentManager.makePayment(request);
+operationId = paymentManager.makePayment(request);
 ```
 
 This call to makePayment() will callback to your app when completed in one of the following functions
@@ -158,28 +131,23 @@ public void paymentFailed(PaymentError paymentError)
 PaymentSuccess - has accessors for transaction id, merchant reference, amount, currency and last four digits of the card number.
 PaymentError – use getKind() to return the type of error. PayPoint errors contain a reasonCode and reasonMessage which can be used to feedback to the user
 
-```java
-public enum ReasonCode {
-    TRANSACTION_CANCELLED(-4),          // Transaction cancelled by user
-    THREE_D_SECURE_TIMEOUT(-3),         // Timeout waiting for 3D Secure
-    THREE_D_SECURE_ERROR(-2),           // Error occurred processing 3D Secure
-    UNKNOWN(-1),
-    SUCCESS(0),                         // Operation successful as described
-    INVALID(1),                         // Request was not correctly formed
-    AUTHENTICATION_FAILED(2),           // The presented API token was not valid, or the wrong type of authentication was used
-    CLIENT_TOKEN_EXPIRED(3),            // Get a new token
-    UNAUTHORISED_REQUEST(4),            // The token was valid, but does not grant you access to use the specified feature
-    TRANSACTION_FAILED_TO_PROCESS(5),   // The transaction was successfully submitted but failed to be processed correctly.
-    SERVER_ERROR(6);                   	// An internal server error occurred at paypoint
-}
+NOTE - the SDK will always callback within a set timeout period (defaulted to 60s). If you wish to change the timeout period call PaymentManager.setSessionTimeout().
+Care should be taken when setting this value as short timeouts might not allow enough time for the payment to be authorized.
+This timeout does not include any delays resulting from the user being redirected to 3D Secure.
 
-if (paymentError.getKind() == PaymentError.Kind.PAYPOINT) {
-    String reasonMessage = paymentError.getPayPointError().getReasonMessage();
-    PaymentError.ReasonCode reasonCode = paymentError.getPayPointError().getReasonCode();
-} else if (paymentError.getKind() == PaymentError.Kind.NETWORK) {
-    // network error
-}
-```
+##Error Handling
+
+If a payment fails e.g. SDK calls back into paymentFailed(), there will be instances where the payment is in an indeterminate\unknown state i.e. the transaction times out or a network error occurred.
+Where the state of the transaction is unknown (shouldCheckStatus() on the ReasonCode returns true) you should query the state of the last transaction by calling getTransactionStatus passing the operation identifier returned by makePayment.
+Calling makePayment again at this point may result in a duplicate payment so should be avoided.
+
+The function getTransactionStatus will use the same callback mechanism as makePayment().
+
+##Get Status of a Previous Transaction
+
+Use PaymentManager.getTransactionStatus to retrieve the status of a previous transaction, passing in the operation id generated by makePayment.
+The function getTransactionStatus will use the same callback mechanism as makePayment().
+
 
 
 

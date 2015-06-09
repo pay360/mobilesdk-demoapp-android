@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">SDK Demo</string>
 
-    <string name="url_paypoint">http://192.168.3.140:5000</string>
-    <string name="url_merchant">http://192.168.3.140:5000/merchant</string>
+    <string name="url_paypoint">http://192.168.3.227:5000</string>
+    <string name="url_merchant">http://192.168.3.227:5000/merchant</string>
     <string name="installation_id">6100001</string>
 
     <string name="activity_splash_title">Payments SDK</string>
