@@ -80,7 +80,7 @@ PaymentRequest request = new PaymentRequest()
         .setTransaction(transaction);
 ```
 
-To submit an authorisation instead of a payment call setDeferred(true) on the transaction.
+To submit an Authorisation instead of a Payment call setDeferred(true) on the transaction.
 
 The cardholder address, financial services data and customer details can also optionally be created and set on the request.
 
@@ -132,7 +132,7 @@ PaymentSuccess - has accessors for transaction id, merchant reference, amount, c
 PaymentError – use getKind() to return the type of error. PayPoint errors contain a reasonCode and reasonMessage which can be used to feedback to the user
 
 NOTE - the SDK will always callback within a set timeout period (defaulted to 60s). If you wish to change the timeout period call PaymentManager.setSessionTimeout().
-Care should be taken when setting this value as short timeouts might not allow enough time for the payment to be authorized.
+Care should be taken when setting this value as short timeouts might not allow enough time for the payment to be authorised.
 This timeout does not include any delays resulting from the user being redirected to 3D Secure.
 
 ##Error Handling
