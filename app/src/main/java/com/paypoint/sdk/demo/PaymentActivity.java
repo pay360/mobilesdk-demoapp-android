@@ -353,7 +353,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                     break;
 
                 case NETWORK_NO_CONNECTION:
-                    errorMessage = "No network connection - please retry";
+                    errorMessage = "No network connection, please retry";
                     break;
 
                 case TRANSACTION_TIMED_OUT:

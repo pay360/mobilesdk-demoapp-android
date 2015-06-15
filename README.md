@@ -80,7 +80,10 @@ PaymentRequest request = new PaymentRequest()
         .setTransaction(transaction);
 ```
 
-To submit an Authorisation instead of a Payment call setDeferred(true) on the transaction.
+To submit an Authorisation instead of a Payment call Transaction.setAuthorisation().
+
+If this is the first payment or authorisation of a continuous authority sequence, you can indicate this using Transaction.setReccuring(). Subsequent repeats can be initiated using the "Repeat a Payment" call.
+Details can be found here. https://developer.paypoint.com/payments/docs/#payments/repeat_a_payment
 
 The cardholder address, financial services data and customer details can also optionally be created and set on the request.
 
