@@ -38,6 +38,9 @@ import retrofit.RetrofitError;
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback,
     MerchantTokenManager.GetTokenCallback {
 
+    // Copy your installation id here
+    private static final String INSTALLATION_ID = "5300311";
+
     private ShakeableEditText editCardNumber;
     private ShakeableEditText editCardExpiry;
     private ShakeableEditText editCardCvv;
@@ -215,7 +218,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             onPaymentStarted();
 
             // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
-            tokenManager.getMerchantToken(getString(R.string.url_merchant), getString(R.string.installation_id), this);
+            tokenManager.getMerchantToken(getString(R.string.url_merchant), INSTALLATION_ID, this);
 
         } catch (PaymentValidationException e) {
             showValidationError(e);
@@ -270,7 +273,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // create the PayPoint credentials to use for the request
         PayPointCredentials credentials = new PayPointCredentials()
-                .setInstallationId(getString(R.string.installation_id))
+                .setInstallationId(INSTALLATION_ID)
                 .setToken(token);
 
         paymentManager.setCredentials(credentials);
