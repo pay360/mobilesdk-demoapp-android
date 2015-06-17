@@ -22,6 +22,7 @@ import com.paypoint.sdk.library.exception.InvalidCredentialsException;
 import com.paypoint.sdk.library.exception.PaymentValidationException;
 import com.paypoint.sdk.library.exception.TransactionInProgressException;
 import com.paypoint.sdk.library.exception.TransactionSuspendedFor3DSException;
+import com.paypoint.sdk.library.network.EndpointManager;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
@@ -36,14 +37,6 @@ import retrofit.RetrofitError;
 
 public class PaymentActivity extends ActionBarActivity implements PaymentManager.MakePaymentCallback,
     MerchantTokenManager.GetTokenCallback {
-
-    /**
-     * The following card numbers can be used for testing against the test payment server:
-     * 9900 0000 0000 5159 – returns successful authorisation.
-     * 9900 0000 0000 5282 – returns payment declined.
-     * All other cards will return a server error.
-     *
-     */
 
     private ShakeableEditText editCardNumber;
     private ShakeableEditText editCardExpiry;
@@ -91,9 +84,9 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             }
         });
 
-        // instantiate the PaymentManager in the SDK
+        // instantiate the PaymentManager in the SDK pointing to MITE
         paymentManager = PaymentManager.getInstance(this)
-                .setUrl(getString(R.string.url_paypoint));
+                .setUrl(EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE));
 
         tokenManager = new MerchantTokenManager();
     }

@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">SDK Demo</string>
 
-    <string name="url_paypoint">http://192.168.3.227:5000</string>
-    <string name="url_merchant">http://192.168.3.227:5000/merchant</string>
-    <string name="installation_id">6100001</string>
+    <string name="url_merchant">https://developer.paypoint.com/payments/explore/rest/mockmobilemerchant</string>
+    <string name="installation_id">5300300</string>
 
     <string name="activity_splash_title">Payments SDK</string>
     <string name="activity_payment_title">Payment</string>
@@ -25,7 +24,7 @@
     <string name="receipt_amount_formatted">£%.2f</string>
 
     <string name="error_expired">Expiry date is in the past</string>
-    <string name="error_expiry_invalid">Invalid expiry date. Must be YYMM</string>
+    <string name="error_expiry_invalid">Invalid expiry date. Must be MMYY</string>
     <string name="error_invalid_pan">Invalid card number. Must be numbers only</string>
     <string name="error_invalid_luhn">Invalid card number</string>
     <string name="error_invalid_cvv">Invalid CVV. Must be numbers only</string>
