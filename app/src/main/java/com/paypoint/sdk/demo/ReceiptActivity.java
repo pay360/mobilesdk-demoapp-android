@@ -78,7 +78,7 @@ public class ReceiptActivity extends ActionBarActivity {
         startAnimation();
 
         // Populate the receipt
-        textCardNumber.setText(paymentSuccess.getMaskedPan());
+        textCardNumber.setText(getString(R.string.receipt_card_number_formatted, paymentSuccess.getLastFourPan()));
         textMerchantRef.setText(paymentSuccess.getMerchantReference());
         textTransactionId.setText(paymentSuccess.getTransactionId());
         textAmount.setText(getString(R.string.receipt_amount_formatted, paymentSuccess.getAmount()));
