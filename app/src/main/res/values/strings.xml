@@ -2,7 +2,6 @@
     <string name="app_name">SDK Demo</string>
 
     <string name="url_merchant">https://developer.paypoint.com/payments/explore/rest/mockmobilemerchant</string>
-    <string name="installation_id">5300300</string>
 
     <string name="activity_splash_title">Payments SDK</string>
     <string name="activity_payment_title">Payment</string>
