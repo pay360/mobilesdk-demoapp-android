@@ -27,8 +27,8 @@ import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
 import com.paypoint.sdk.library.payment.PaymentSuccess;
-import com.paypoint.sdk.library.payment.request.PaymentCard;
-import com.paypoint.sdk.library.payment.request.Transaction;
+import com.paypoint.sdk.library.payment.PaymentCard;
+import com.paypoint.sdk.library.payment.Transaction;
 import com.paypoint.sdk.library.security.PayPointCredentials;
 
 import java.util.UUID;
