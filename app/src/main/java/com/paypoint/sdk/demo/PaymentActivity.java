@@ -11,7 +11,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.paypoint.sdk.demo.merchant.MerchantTokenManager;
 import com.paypoint.sdk.demo.utils.FontUtils;
@@ -23,6 +25,8 @@ import com.paypoint.sdk.library.exception.PaymentValidationException;
 import com.paypoint.sdk.library.exception.TransactionInProgressException;
 import com.paypoint.sdk.library.exception.TransactionSuspendedFor3DSException;
 import com.paypoint.sdk.library.network.EndpointManager;
+import com.paypoint.sdk.library.payment.BillingAddress;
+import com.paypoint.sdk.library.payment.CustomField;
 import com.paypoint.sdk.library.payment.PaymentError;
 import com.paypoint.sdk.library.payment.PaymentManager;
 import com.paypoint.sdk.library.payment.PaymentRequest;
@@ -31,6 +35,8 @@ import com.paypoint.sdk.library.payment.PaymentCard;
 import com.paypoint.sdk.library.payment.Transaction;
 import com.paypoint.sdk.library.security.PayPointCredentials;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import retrofit.RetrofitError;
@@ -45,6 +51,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     private ShakeableEditText editCardExpiry;
     private ShakeableEditText editCardCvv;
     private Button buttonPay;
+    private EditText editAmount;
 
     private PaymentManager paymentManager;
     private MerchantTokenManager tokenManager;
@@ -74,6 +81,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         editCardNumber = (ShakeableEditText)findViewById(R.id.editCardNumber);
         editCardExpiry = (ShakeableEditText)findViewById(R.id.editCardExpiry);
         editCardCvv = (ShakeableEditText)findViewById(R.id.editCardCVV);
+        editAmount = (EditText)findViewById(R.id.editAmount);
         buttonPay = (Button)findViewById(R.id.buttonPay);
 
         initialiseInlineValidation();
@@ -92,6 +100,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setUrl(EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE));
 
         tokenManager = new MerchantTokenManager();
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -192,6 +202,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         // MERCHANT TO IMPLEMENT - generate this according to your own requirements
         String merchantRef = "mer_" + UUID.randomUUID().toString().substring(0, 8);
 
+        float amount = Float.parseFloat(editAmount.getText().toString());
+
         // build up the card payment
         PaymentCard card = new PaymentCard()
                 .setPan(cardNumber)
@@ -202,13 +214,35 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         // currency and amount hardcoded in this instance for demo
         Transaction transaction = new Transaction()
                 .setCurrency("GBP")
-                .setAmount(100.00f)
+                .setAmount(amount)
                 .setMerchantReference(merchantRef);
+
+        BillingAddress address = new BillingAddress()
+                .setLine1("House Name")
+                .setLine2("Street")
+                .setCity("Bath")
+                .setRegion("Somerset")
+                .setPostcode("BA1 5BG");
 
         // create the payment request
         request = new PaymentRequest()
                 .setCard(card)
-                .setTransaction(transaction);
+                .setTransaction(transaction)
+                .setAddress(address);
+
+        List<CustomField> customFields = new ArrayList<CustomField>();
+
+        customFields.add(new CustomField()
+                .setName("CustomName")
+                .setValue("CustomValue")
+                .setTransient(true));
+
+        customFields.add(new CustomField()
+                .setName("AnotherCustomName")
+                .setValue("AnotherCustomValue")
+                .setTransient(false));
+
+        request.setCustomFields(customFields);
 
         try {
             // locally validate payment details entered by user
@@ -330,7 +364,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         onPaymentEnded();
 
         String errorMessage = "Unexpected error";
-        boolean checkStatus = true;
+        boolean retryPayment = false;
 
         if (paymentError != null) {
             // paymentError.getReasonMessage() should be used for debugging only
@@ -340,7 +374,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
             // isIndeterminate = true when not payment has reached server but not sure if success or declined
             // should then call PaymentManager.getTransactionStatus
-            checkStatus = reasonCode.shouldCheckStatus();
+            retryPayment = reasonCode.isSafeToRetryPayment();
 
             switch (reasonCode) {
 
@@ -395,7 +429,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             }
         }
 
-        showError("Payment Failed: \n" + errorMessage, checkStatus);
+        showError("Payment Failed: \n" + errorMessage, !retryPayment);
     }
 
     /**
