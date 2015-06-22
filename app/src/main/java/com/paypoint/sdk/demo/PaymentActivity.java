@@ -100,8 +100,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setUrl(EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE));
 
         tokenManager = new MerchantTokenManager();
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     @Override
@@ -229,20 +227,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
                 .setCard(card)
                 .setTransaction(transaction)
                 .setAddress(address);
-
-        List<CustomField> customFields = new ArrayList<CustomField>();
-
-        customFields.add(new CustomField()
-                .setName("CustomName")
-                .setValue("CustomValue")
-                .setTransient(true));
-
-        customFields.add(new CustomField()
-                .setName("AnotherCustomName")
-                .setValue("AnotherCustomValue")
-                .setTransient(false));
-
-        request.setCustomFields(customFields);
 
         try {
             // locally validate payment details entered by user
