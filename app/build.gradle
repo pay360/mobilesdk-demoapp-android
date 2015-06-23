@@ -13,6 +13,7 @@ android {
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -20,6 +21,15 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('./../keys')
+            storePassword 'paypoint'
+            keyAlias 'paypoint'
+            keyPassword 'paypoint'
+        }
     }
 
     productFlavors {
@@ -48,7 +58,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
 
     if (project.hasProperty('jenkins')) {
-        jenkinsCompile 'net.paypoint:mobilesdk-android:+'
+        jenkinsCompile 'net.paypoint:mobilesdk-android:1.0.0-SNAPSHOT'
         jenkinsCompile 'com.facebook.rebound:rebound:0.3.7'
     } else {
         localCompile fileTree(dir: 'libs', include: ['*.jar'])
