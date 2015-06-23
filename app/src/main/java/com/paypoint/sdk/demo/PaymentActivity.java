@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -57,6 +58,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     private MerchantTokenManager tokenManager;
     private PaymentRequest request;
     private String operationId;
+    private String merchantUrl;
+    private String installationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +98,31 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             }
         });
 
+        // read url from build first, fallback to local config
+        String serverUrl = getString(R.string.build_url_server);
+
+        if (TextUtils.isEmpty(serverUrl)) {
+            serverUrl = EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE);
+        }
+
         // instantiate the PaymentManager in the SDK pointing to MITE
         paymentManager = PaymentManager.getInstance(this)
-                .setUrl(EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE));
+                .setUrl(serverUrl);
 
         tokenManager = new MerchantTokenManager();
+
+        // read url from build first, fallback to local config
+        merchantUrl = getString(R.string.build_url_merchant);
+
+        if (TextUtils.isEmpty(merchantUrl)) {
+            merchantUrl = getString(R.string.url_merchant);
+        }
+
+        installationId = getString(R.string.build_installation_id);
+
+        if (TextUtils.isEmpty(installationId)) {
+            installationId = INSTALLATION_ID;
+        }
     }
 
     @Override
@@ -236,7 +259,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             onPaymentStarted();
 
             // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
-            tokenManager.getMerchantToken(getString(R.string.url_merchant), INSTALLATION_ID, this);
+            tokenManager.getMerchantToken(merchantUrl, INSTALLATION_ID, this);
 
         } catch (PaymentValidationException e) {
             showValidationError(e);

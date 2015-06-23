@@ -5,6 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
+
         applicationId "com.paypoint.sdk.demo"
         minSdkVersion 14
         targetSdkVersion 21
@@ -22,18 +23,30 @@ android {
     }
 
     buildTypes {
+        def serverUrl = project.hasProperty('paypoint.server.url') ? project.property('paypoint.server.url') : ""
+        def merchantUrl = project.hasProperty('paypoint.merchant.url') ? project.property('paypoint.merchant.url') : ""
+        def installationId = project.hasProperty('paypoint.installationId') ? project.property('paypoint.installationId') : ""
+
         release {
+            resValue "string", "build_url_server", serverUrl
+            resValue "string", "build_url_merchant", merchantUrl
+            resValue "string", "build_installation_id", installationId
+
             signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            resValue "string", "build_url_server", serverUrl
+            resValue "string", "build_url_merchant", merchantUrl
+            resValue "string", "build_installation_id", installationId
         }
     }
 
     lintOptions {
         abortOnError false
     }
-
-
 
     productFlavors {
 
