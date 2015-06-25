@@ -259,7 +259,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             onPaymentStarted();
 
             // MERCHANT TO IMPLEMENT - payment details valid, now get merchant token
-            tokenManager.getMerchantToken(merchantUrl, INSTALLATION_ID, this);
+            tokenManager.getMerchantToken(merchantUrl, installationId, this);
 
         } catch (PaymentValidationException e) {
             showValidationError(e);
@@ -314,7 +314,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // create the PayPoint credentials to use for the request
         PayPointCredentials credentials = new PayPointCredentials()
-                .setInstallationId(INSTALLATION_ID)
+                .setInstallationId(installationId)
                 .setToken(token);
 
         paymentManager.setCredentials(credentials);
