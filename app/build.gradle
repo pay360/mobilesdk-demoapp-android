@@ -47,20 +47,6 @@ android {
     lintOptions {
         abortOnError false
     }
-
-    productFlavors {
-
-
-        if (project.hasProperty('jenkins')) {
-            jenkins {
-                applicationId "com.paypoint.sdk.demo"
-            }
-        } else {
-            local {
-                applicationId "com.paypoint.sdk.demo"
-            }
-        }
-    }
 }
 
 repositories {
@@ -72,19 +58,28 @@ repositories {
 dependencies {
 
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.facebook.rebound:rebound:0.3.7'
 
-    if (project.hasProperty('jenkins')) {
-        jenkinsCompile 'net.paypoint:mobilesdk-android:1.0.0-SNAPSHOT'
-        jenkinsCompile 'com.facebook.rebound:rebound:0.3.7'
+    // check devEnv property - used to change behaviour for local\ci\app build
+    if (project.hasProperty('devEnv')) {
+
+        if (project.property('devEnv').equals('local')) {
+            // pull in aar from local file system during development
+            compile fileTree(dir: 'libs', include: ['*.jar'])
+            compile(name: 'paypoint_sdk', ext: 'aar')
+
+            // also need to manually pull in dependencies
+            compile 'com.squareup.retrofit:retrofit:1.9.0'
+            compile 'com.google.code.gson:gson:2.2.4'
+            compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
+            compile 'com.squareup.okhttp:okhttp:2.4.0'
+            compile 'com.netflix.rxjava:rxjava-android:0.20.7'
+        } else if (project.property('devEnv').equals('ci')) {
+            // for ci builds use the most recent version of the SDK
+            compile 'net.paypoint:mobilesdk-android:+'
+        }
     } else {
-        localCompile fileTree(dir: 'libs', include: ['*.jar'])
-        localCompile(name: 'paypoint_sdk-0.0.1', ext: 'aar')
-
-        localCompile 'com.squareup.retrofit:retrofit:1.9.0'
-        localCompile 'com.google.code.gson:gson:2.2.4'
-        localCompile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
-        localCompile 'com.squareup.okhttp:okhttp:2.4.0'
-        localCompile 'com.netflix.rxjava:rxjava-android:0.20.7'
-        localCompile 'com.facebook.rebound:rebound:0.3.7'
+        // point to a specified version of the SDK - this is what apps using the SDK should do
+        compile 'net.paypoint:mobilesdk-android:1.0.0'
     }
 }
