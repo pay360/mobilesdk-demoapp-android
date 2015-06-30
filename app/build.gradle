@@ -50,8 +50,10 @@ android {
 }
 
 repositories {
-    flatDir {
-        dirs '../../PayPointSDK/library/build/outputs/aar'
+    if (project.hasProperty('paypoint.sdk.project.name')) {
+        flatDir {
+            dirs '../../' + project.property('paypoint.sdk.project.name') + '/library/build/outputs/aar'
+        }
     }
 }
 
