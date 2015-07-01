@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * Created by Jamie on 02/10/2014.
+ * Utilities for setting view fonts
  */
 public class FontUtils {
 
