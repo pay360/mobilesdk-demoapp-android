@@ -61,7 +61,7 @@ public class FontUtils {
      * @param container
      */
     public static void setFontForHierarchy(Context context, View container) {
-        setFontForHierarchy(context, (ViewGroup) container);
+//        setFontForHierarchy(context, (ViewGroup) container);
     }
 
     /**
