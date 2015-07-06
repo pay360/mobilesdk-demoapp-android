@@ -223,7 +223,11 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         // MERCHANT TO IMPLEMENT - generate this according to your own requirements
         String merchantRef = "mer_" + UUID.randomUUID().toString().substring(0, 8);
 
-        float amount = Float.parseFloat(editAmount.getText().toString());
+        float amount = 0;
+
+        if (!TextUtils.isEmpty(editAmount.getText().toString())) {
+            amount = Float.parseFloat(editAmount.getText().toString());
+        }
 
         // build up the card payment
         PaymentCard card = new PaymentCard()

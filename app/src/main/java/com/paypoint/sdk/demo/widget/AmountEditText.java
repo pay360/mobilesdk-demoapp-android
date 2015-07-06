@@ -14,6 +14,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class AmountEditText extends EditText {
 
     public AmountEditText(Context context) {
@@ -35,36 +38,23 @@ public class AmountEditText extends EditText {
     }
 
     private void initialise() {
-        // limit to two decimal places
-        setFilters(new InputFilter[]{
-                new DigitsKeyListener(Boolean.FALSE, Boolean.TRUE) {
-                    int beforeDecimal = 4;
+        setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
+    }
 
-                    int afterDecimal = 2;
+    private class DecimalDigitsInputFilter implements InputFilter {
+        Pattern pattern;
+        public DecimalDigitsInputFilter(int digitsAfterZero) {
+            pattern = Pattern.compile("[0-9]+((\\.[0-9]{0," + (digitsAfterZero-1) + "})?)||(\\.)?");
+        }
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
 
-                    @Override
-                    public CharSequence filter(CharSequence source, int start, int end,
-                                               Spanned dest, int dstart, int dend) {
-                        String temp = getText() + source.toString();
-
-                        if (temp.equals(".")) {
-                            return "0.";
-                        } else if (temp.toString().indexOf(".") == -1) {
-                            // no decimal point placed yet
-                            if (temp.length() > beforeDecimal) {
-                                return "";
-                            }
-                        } else {
-                            temp = temp.substring(temp.indexOf(".") + 1);
-                            if (temp.length() > afterDecimal) {
-                                return "";
-                            }
-                        }
-
-                        return super.filter(source, start, end, dest, dstart, dend);
-                    }
-                }
-        });
+            Matcher matcher= pattern.matcher(dest);
+            if(!matcher.matches()) {
+                return "";
+            }
+            return null;
+        }
     }
 
     @Override
