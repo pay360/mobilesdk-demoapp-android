@@ -29,7 +29,8 @@
             android:inputType="number"
             android:maxLength="23"
             style="@style/Text.Edit"
-            android:layout_marginTop="@dimen/activity_vertical_margin_quarter"/>
+            android:layout_marginTop="@dimen/activity_vertical_margin_quarter"
+            android:imeOptions="flagNoExtractUi"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,7 +57,8 @@
                     android:maxLength="4"
                     android:textColorHint="@color/paypoint_grey_50"
                     android:hint="MMYY"
-                    android:layout_marginTop="@dimen/activity_vertical_margin_quarter"/>
+                    android:layout_marginTop="@dimen/activity_vertical_margin_quarter"
+                    android:imeOptions="flagNoExtractUi"/>
             </LinearLayout>
 
             <LinearLayout
@@ -76,7 +78,8 @@
                     android:inputType="number"
                     style="@style/Text.Edit"
                     android:maxLength="4"
-                    android:layout_marginTop="@dimen/activity_vertical_margin_quarter"/>
+                    android:layout_marginTop="@dimen/activity_vertical_margin_quarter"
+                    android:imeOptions="flagNoExtractUi"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -108,7 +111,7 @@
         android:text="100.00" android:layout_width="90dp"
         android:layout_height="wrap_content"
         style="@style/Text.Edit"
-        android:imeOptions="actionDone"
+        android:imeOptions="actionDone|flagNoExtractUi"
         android:inputType="numberDecimal"
         android:gravity="right|center_vertical"
         android:layout_above="@+id/buttonPay"
