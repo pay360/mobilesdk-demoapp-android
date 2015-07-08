@@ -374,7 +374,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     public void paymentFailed(PaymentError paymentError) {
         onPaymentEnded();
 
-        String errorMessage = "Unexpected error";
+        String errorMessage = "Unexpected error.";
         boolean retryPayment = false;
 
         if (paymentError != null) {
@@ -383,61 +383,64 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
             // PayPointError also provides an error enum
             PaymentError.ReasonCode reasonCode = paymentError.getReasonCode();
 
-            // isIndeterminate = true when not payment has reached server but not sure if success or declined
-            // should then call PaymentManager.getTransactionStatus
+            // if isSafeToRetryPayment() returns true then payment has not been taken
             retryPayment = reasonCode.isSafeToRetryPayment();
 
             switch (reasonCode) {
 
                 case NETWORK_ERROR_DURING_PROCESSING:
-                    errorMessage = "Network error during transaction";
+                    errorMessage = "Network error during transaction.";
                     break;
 
                 case NETWORK_NO_CONNECTION:
-                    errorMessage = "No network connection, please retry";
+                    errorMessage = "No network connection, please retry.";
                     break;
 
                 case TRANSACTION_TIMED_OUT:
-                    errorMessage = "Transaction timed out waiting for a response";
+                    errorMessage = "Transaction timed out waiting for a response.";
                     break;
 
                 case TRANSACTION_CANCELLED_BY_USER:
-                    errorMessage = "Transaction cancelled by the user";
+                    errorMessage = "Transaction cancelled by the user.";
                     break;
 
                 case UNEXPECTED:
-                    errorMessage = "Something went wrong, we don't know what";
+                    errorMessage = "Something went wrong, we don't know what.";
                     break;
 
                 case INVALID:
-                    errorMessage = "Invalid request sent to the server";
+                    errorMessage = "Invalid request sent to the server.";
                     break;
 
                 case TRANSACTION_DECLINED:
-                    errorMessage = "The transaction was declined";
+                    errorMessage = "The transaction was declined.";
                     break;
 
                 case SERVER_ERROR:
-                    errorMessage = "An internal server error occurred";
+                    errorMessage = "An internal server error occurred.";
                     break;
 
                 case TRANSACTION_NOT_FOUND:
-                    errorMessage = "The transaction failed";
+                    errorMessage = "The transaction failed.";
                     break;
 
                 case AUTHENTICATION_FAILED:
-                    errorMessage = "The merchant token is incorrect";
+                    errorMessage = "The merchant token is incorrect.";
                     break;
 
                 case CLIENT_TOKEN_EXPIRED:
-                    errorMessage = "The merchant token has expired";
+                    errorMessage = "The merchant token has expired.";
                     break;
 
                 case UNAUTHORISED_REQUEST:
-                    errorMessage = "The merchant token does not grant you access to making a payment";
+                    errorMessage = "The merchant token does not grant you access to making a payment.";
                     break;
 
             }
+        }
+
+        if (retryPayment) {
+            errorMessage += "\nNo money has been taken from your account.";
         }
 
         showError("Payment Failed: \n" + errorMessage, !retryPayment);
