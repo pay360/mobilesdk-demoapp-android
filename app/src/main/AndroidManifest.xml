@@ -16,8 +16,7 @@
         </activity>
 
         <activity
-            android:name=".ReceiptActivity"
-            android:screenOrientation="portrait">
+            android:name=".ReceiptActivity">
         </activity>
 
         <activity
@@ -31,8 +30,7 @@
 
         </activity>
 
-        <activity android:name="com.paypoint.sdk.library.ThreeDSActivity"
-            android:screenOrientation="portrait">
+        <activity android:name="com.paypoint.sdk.library.ThreeDSActivity">
         </activity>
     </application>
 
