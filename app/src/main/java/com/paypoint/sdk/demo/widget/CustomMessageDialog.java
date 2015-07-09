@@ -45,8 +45,6 @@ public class CustomMessageDialog extends DialogFragment {
 
         d.setContentView(R.layout.custom_message_dialog);
 
-        FontUtils.setFontForHierarchy(this.getActivity(), d.findViewById(R.id.viewRoot));
-
         TextView titleView = (TextView)d.findViewById(R.id.textTitle);
 
         titleView.setText(getArguments().getString(ARG_TITLE));

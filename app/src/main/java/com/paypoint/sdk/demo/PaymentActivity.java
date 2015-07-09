@@ -66,8 +66,6 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        FontUtils.setFontForHierarchy(this, getWindow().getDecorView().findViewById(android.R.id.content));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.activity_payment_title);

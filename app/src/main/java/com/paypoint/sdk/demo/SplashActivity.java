@@ -31,16 +31,10 @@ public class SplashActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        FontUtils.setFontForHierarchy(this, getWindow().getDecorView().findViewById(android.R.id.content));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle(R.string.activity_splash_title);
-
-        TextView labelPayPoint = (TextView)findViewById(R.id.labelPayPoint);
-
-        FontUtils.setFoundryBold(this, labelPayPoint);
 
         buttonStart = (Button)findViewById(R.id.buttonStart);
         buttonStart.setOnClickListener(new View.OnClickListener() {

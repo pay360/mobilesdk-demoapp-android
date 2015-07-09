@@ -39,8 +39,6 @@ public class ReceiptActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
 
-        FontUtils.setFontForHierarchy(this, getWindow().getDecorView().findViewById(android.R.id.content));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

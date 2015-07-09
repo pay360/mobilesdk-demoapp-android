@@ -16,15 +16,7 @@ import android.widget.TextView;
  */
 public class FontUtils {
 
-    private static Typeface FONT_REGULAR;
-    private static Typeface FONT_BOLD;
     private static Typeface FONT_AWESOME;
-
-    private static boolean fontsNotLoaded = true;
-
-    private static void loadCustomFont(Context context) {
-        FONT_REGULAR = readFont(context, FONT_REGULAR, "FOUCONRG.otf");
-    }
 
     private static Typeface readFont(Context context, Typeface font, String fontPath) {
         if (font == null) {
@@ -44,61 +36,6 @@ public class FontUtils {
 
         if (FONT_AWESOME != null) {
             textView.setTypeface(FONT_AWESOME, Typeface.NORMAL);
-        }
-    }
-
-    public static void setFoundryBold(Context context, TextView textView) {
-
-        FONT_BOLD = readFont(context, FONT_BOLD, "FOUCONDM.otf");
-
-        if (FONT_BOLD != null) {
-            textView.setTypeface(FONT_BOLD, Typeface.NORMAL);
-        }
-    }
-
-    /**
-     * Sets all text to the custom font, initialising the typeface if not already loaded
-     * @param container
-     */
-    public static void setFontForHierarchy(Context context, View container) {
-//        setFontForHierarchy(context, (ViewGroup) container);
-    }
-
-    /**
-     * Sets all text to the custom font, initialising the typeface if not already loaded
-     * @param container
-     */
-    public static void setFontForHierarchy(Context context, ViewGroup container) {
-
-        if (fontsNotLoaded) {
-            loadCustomFont(context);
-            fontsNotLoaded = false;
-        }
-
-        if (container == null) {
-            Log.e("FontUtils", "Container null");
-            return;
-        }
-        if (FONT_REGULAR == null) {
-            Log.e("FontUtils", "One or more custom fonts null");
-            return;
-        }
-
-        final int count = container.getChildCount();
-
-        // Loop through all of the children.
-        for (int i = 0; i < count; ++i)
-        {
-            final View child = container.getChildAt(i);
-            if (child instanceof TextView) {
-                // Set the font if it is a TextView.
-                TextView view = (TextView) child;
-
-                view.setTypeface(FONT_REGULAR, Typeface.NORMAL);
-            } else if (child instanceof ViewGroup) {
-                // Recursively attempt another ViewGroup.
-                setFontForHierarchy(context, (ViewGroup) child);
-            }
         }
     }
 }

@@ -43,8 +43,6 @@ public class CustomWaitDialog extends DialogFragment {
 
         d.setContentView(R.layout.custom_progress_dialog);
 
-        FontUtils.setFontForHierarchy(this.getActivity(), d.findViewById(R.id.viewRoot));
-
         TextView titleView = (TextView)d.findViewById(R.id.textMessage);
 
         Animation waitAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.pulse);
