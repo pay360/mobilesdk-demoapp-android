@@ -1,10 +1,10 @@
-# PayPoint Advanced Payments SDK Demo
+# Pay360 by Capita Advanced Payments SDK Demo
 
-Demonstrates how to integrate the [PayPoint Advanced Payments SDK](https://github.com/paypoint/mobilesdk-android) into your app.
+Demonstrates how to integrate the [Pay360 by Capita Advanced Payments SDK](https://github.com/paypoint/mobilesdk-android) into your app.
 
 ## Quickstart
 
-Sign up for an Explorer account at [PayPoint Explorer](https://developer.paypoint.com/payments/explore/#/register)
+Sign up for an Explorer account at [Pay360 by Capita Explorer](https://developer.paypoint.com/payments/explore/#/register)
 
 Replace the installation id in PaymentActivity with the Cashier API installation id you are provided with after sign up.
 
