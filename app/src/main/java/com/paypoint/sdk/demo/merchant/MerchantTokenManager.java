@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016. Pay360
  */
 
 package com.paypoint.sdk.demo.merchant;
@@ -18,7 +18,7 @@ import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
- * Handles reading of PayPoint merchant token - when integrating this will be the responsibility
+ * Handles reading of Pay360 merchant token - when integrating this will be the responsibility
  * of the merchant to implement this REST call to their own server
  * Who:  Pete
  * When: 20/04/2015

@@ -22,7 +22,7 @@
            android:layout_height="wrap_content"
            android:textSize="70sp"
            android:layout_gravity="center_horizontal"
-           android:textColor="@color/paypoint_yellow"
+           android:textColor="@color/yellow"
            android:layout_marginTop="50dp"
            android:layout_marginBottom="50dp"
            android:visibility="invisible"/>

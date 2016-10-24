@@ -19,21 +19,10 @@
         android:visibility="invisible">
 
         <ImageView android:id="@+id/imageLogo"
-            android:layout_width="100dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/_paypoint_logo"
+            android:src="@drawable/_pay360_logo_text"
             android:adjustViewBounds="true"/>
-
-        <TextView
-            android:id="@+id/labelPayPoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="32sp"
-            android:textColor="@color/paypoint_blue"
-            android:text="@string/splash_paypoint"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 

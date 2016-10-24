@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016. Pay360
  */
 
 package com.paypoint.sdk.demo;
@@ -7,12 +7,6 @@ package com.paypoint.sdk.demo;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-/**
- * Implements card number entry as xxxx xxxx xxxx xxxx
- * Who:  Pete
- * When: 16/04/2015
- * What:
- */
 public class CardNumberFormatter implements TextWatcher {
 
     private static final char space = ' ';

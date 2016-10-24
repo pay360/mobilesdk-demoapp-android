@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016. Pay360
  */
 
 package com.paypoint.sdk.demo.widget;
@@ -14,11 +14,6 @@ import android.widget.EditText;
 
 import com.paypoint.sdk.demo.R;
 
-/**
- * Who:  Pete
- * When: 22/04/2015
- * What:
- */
 public class ShakeableEditText extends EditText {
 
     private String error;

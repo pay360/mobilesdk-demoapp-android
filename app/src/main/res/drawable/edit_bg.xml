@@ -4,5 +4,5 @@
     <!--<stroke android:width="2dp"-->
         <!--android:color="@color/paypoint_blue"/>-->
 
-    <solid android:color="@color/paypoint_yellow" />
+    <solid android:color="@color/yellow" />
 </shape>

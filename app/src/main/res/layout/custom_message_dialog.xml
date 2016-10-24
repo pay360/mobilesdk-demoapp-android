@@ -14,14 +14,14 @@
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:background="@color/paypoint_blue"/>
+        android:background="@color/blue"/>
 
     <TextView
         android:id="@+id/textMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/paypoint_blue"
+        android:textColor="@color/blue"
         android:textSize="16sp" />
 
     <RelativeLayout

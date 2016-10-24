@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016. Pay360
  */
 
 package com.paypoint.sdk.demo;
@@ -17,11 +17,6 @@ import android.widget.TextView;
 
 import com.paypoint.sdk.demo.utils.FontUtils;
 
-/**
- * Who:  Pete
- * When: 17/04/2015
- * What:
- */
 public class SplashActivity extends ActionBarActivity {
 
     private Button buttonStart;

@@ -55,7 +55,7 @@
                     android:digits="0123456789"
                     style="@style/Text.Edit"
                     android:maxLength="4"
-                    android:textColorHint="@color/paypoint_grey_50"
+                    android:textColorHint="@color/grey_50"
                     android:hint="MMYY"
                     android:layout_marginTop="@dimen/activity_vertical_margin_quarter"
                     android:imeOptions="flagNoExtractUi"/>
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/_paypoint_logo"
+        android:src="@drawable/_pay360_logo_circle"
         android:adjustViewBounds="true"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"

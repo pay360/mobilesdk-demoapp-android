@@ -7,7 +7,7 @@
     <string name="activity_payment_title">Payment</string>
     <string name="activity_receipt_title">Receipt</string>
 
-    <string name="splash_paypoint">PayPoint</string>
+    <string name="splash_pay360">Pay360</string>
     <string name="splash_button_text">Start</string>
 
     <string name="payment_card_number">Card Number</string>

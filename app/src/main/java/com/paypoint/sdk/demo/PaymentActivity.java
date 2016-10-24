@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016. Pay360
  */
 
 package com.paypoint.sdk.demo;
@@ -97,7 +97,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         });
 
         // read url from build first, fallback to local config
-        String serverUrl = getString(R.string.build_url_server);
+        String serverUrl = "http://10.113.62.75:5000";
 
         if (TextUtils.isEmpty(serverUrl)) {
             serverUrl = EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE);
@@ -110,7 +110,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         tokenManager = new MerchantTokenManager();
 
         // read url from build first, fallback to local config
-        merchantUrl = getString(R.string.build_url_merchant);
+        merchantUrl = "http://10.113.62.75:5000/merchant";
 
         if (TextUtils.isEmpty(merchantUrl)) {
             merchantUrl = getString(R.string.url_merchant);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016. Pay360
  */
 
 package com.paypoint.sdk.demo.widget;
@@ -16,11 +16,6 @@ import com.paypoint.sdk.demo.PaymentActivity;
 import com.paypoint.sdk.demo.R;
 import com.paypoint.sdk.demo.utils.FontUtils;
 
-/**
- * Who:  Pete
- * When: 15/04/2015
- * What: PayPoint styled message dialog
- */
 public class CustomMessageDialog extends DialogFragment {
 
     private static final String ARG_TITLE = "com.paypoint.sdk.demo.widget.CustomMessageDialog.ARG_TITLE";
