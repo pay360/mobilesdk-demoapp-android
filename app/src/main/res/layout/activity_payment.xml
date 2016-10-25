@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PaymentActivity"
+    tools:context="com.pay360.sdk.demo.PaymentActivity"
     android:background="@android:color/white">
 
    <include android:layout_width="match_parent"
@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             style="@style/Text.Normal"/>
 
-        <com.paypoint.sdk.demo.widget.ShakeableEditText android:id="@+id/editCardNumber"
+        <com.pay360.sdk.demo.widget.ShakeableEditText
+            android:id="@+id/editCardNumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:digits="01234 56789"
@@ -48,7 +49,8 @@
                     android:layout_height="wrap_content"
                     style="@style/Text.Normal"/>
 
-                <com.paypoint.sdk.demo.widget.ShakeableEditText android:id="@+id/editCardExpiry"
+                <com.pay360.sdk.demo.widget.ShakeableEditText
+                    android:id="@+id/editCardExpiry"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -72,7 +74,8 @@
                     android:layout_height="wrap_content"
                     style="@style/Text.Normal"/>
 
-                <com.paypoint.sdk.demo.widget.ShakeableEditText android:id="@+id/editCardCVV"
+                <com.pay360.sdk.demo.widget.ShakeableEditText
+                    android:id="@+id/editCardCVV"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="number"
@@ -107,7 +110,8 @@
         android:layout_alignBottom="@+id/editAmount"
         android:layout_marginRight="5dp"/>
 
-    <com.paypoint.sdk.demo.widget.AmountEditText android:id="@+id/editAmount"
+    <com.pay360.sdk.demo.widget.AmountEditText
+        android:id="@+id/editAmount"
         android:text="100.00" android:layout_width="90dp"
         android:layout_height="wrap_content"
         style="@style/Text.Edit"

@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
 
-        applicationId "com.paypoint.sdk.demo"
+        applicationId "com.pay360.sdk.demo"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
@@ -23,9 +23,9 @@ android {
     }
 
     buildTypes {
-        def serverUrl = project.hasProperty('paypoint.server.url') ? project.property('paypoint.server.url') : ""
-        def merchantUrl = project.hasProperty('paypoint.merchant.url') ? project.property('paypoint.merchant.url') : ""
-        def installationId = project.hasProperty('paypoint.installationId') ? project.property('paypoint.installationId') : ""
+        def serverUrl = project.hasProperty('pay360.server.url') ? project.property('pay360.server.url') : ""
+        def merchantUrl = project.hasProperty('pay360.merchant.url') ? project.property('pay360.merchant.url') : ""
+        def installationId = project.hasProperty('pay360.installationId') ? project.property('pay360.installationId') : ""
 
         release {
             resValue "string", "build_url_server", serverUrl
@@ -50,9 +50,9 @@ android {
 }
 
 repositories {
-    if (project.hasProperty('paypoint.sdk.project.name')) {
+    if (project.hasProperty('pay360.sdk.project.name')) {
         flatDir {
-            dirs '../../' + project.property('paypoint.sdk.project.name') + '/library/build/outputs/aar'
+            dirs '../../' + project.property('pay360.sdk.project.name') + '/library/build/outputs/aar'
         }
     }
 }
