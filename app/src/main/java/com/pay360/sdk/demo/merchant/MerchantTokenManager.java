@@ -7,7 +7,7 @@ package com.pay360.sdk.demo.merchant;
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
-import com.paypoint.sdk.library.log.Logger;
+import com.pay360.sdk.library.log.Logger;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;

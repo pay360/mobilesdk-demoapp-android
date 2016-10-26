@@ -16,7 +16,7 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 import com.pay360.sdk.demo.utils.FontUtils;
-import com.paypoint.sdk.library.payment.PaymentSuccess;
+import com.pay360.sdk.library.payment.PaymentSuccess;
 
 public class ReceiptActivity extends ActionBarActivity {
 

@@ -18,19 +18,20 @@ import com.pay360.sdk.demo.merchant.MerchantTokenManager;
 import com.pay360.sdk.demo.widget.CustomMessageDialog;
 import com.pay360.sdk.demo.widget.CustomWaitDialog;
 import com.pay360.sdk.demo.widget.ShakeableEditText;
-import com.paypoint.sdk.library.exception.InvalidCredentialsException;
-import com.paypoint.sdk.library.exception.PaymentValidationException;
-import com.paypoint.sdk.library.exception.TransactionInProgressException;
-import com.paypoint.sdk.library.exception.TransactionSuspendedFor3DSException;
-import com.paypoint.sdk.library.network.EndpointManager;
-import com.paypoint.sdk.library.payment.BillingAddress;
-import com.paypoint.sdk.library.payment.PaymentError;
-import com.paypoint.sdk.library.payment.PaymentManager;
-import com.paypoint.sdk.library.payment.PaymentRequest;
-import com.paypoint.sdk.library.payment.PaymentSuccess;
-import com.paypoint.sdk.library.payment.PaymentCard;
-import com.paypoint.sdk.library.payment.Transaction;
-import com.paypoint.sdk.library.security.PayPointCredentials;
+import com.pay360.sdk.library.exception.InvalidCredentialsException;
+import com.pay360.sdk.library.exception.PaymentValidationException;
+import com.pay360.sdk.library.exception.TransactionInProgressException;
+import com.pay360.sdk.library.exception.TransactionSuspendedFor3DSException;
+import com.pay360.sdk.library.network.EndpointManager;
+import com.pay360.sdk.library.payment.BillingAddress;
+import com.pay360.sdk.library.payment.PaymentError;
+import com.pay360.sdk.library.payment.PaymentManager;
+import com.pay360.sdk.library.payment.PaymentRequest;
+import com.pay360.sdk.library.payment.PaymentSuccess;
+import com.pay360.sdk.library.payment.PaymentCard;
+import com.pay360.sdk.library.payment.Transaction;
+import com.pay360.sdk.library.security.Credentials;
+
 
 import java.util.UUID;
 
@@ -309,7 +310,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     public void getTokenSucceeded(String token) {
 
         // create the credentials to use for the request
-        PayPointCredentials credentials = new PayPointCredentials()
+        Credentials credentials = new Credentials()
                 .setInstallationId(installationId)
                 .setToken(token);
 
