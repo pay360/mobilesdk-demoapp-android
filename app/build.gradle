@@ -16,9 +16,9 @@ android {
     signingConfigs {
         release {
             storeFile file('./../keys.jks')
-            storePassword 'paypoint'
-            keyAlias 'paypoint'
-            keyPassword 'paypoint'
+            storePassword 'password'
+            keyAlias 'alias'
+            keyPassword 'password'
         }
     }
 
