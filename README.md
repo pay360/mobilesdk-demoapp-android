@@ -1,6 +1,6 @@
 # PayPoint Advanced Payments SDK Demo
 
-Demonstrates how to integrate the [PayPoint Advanced Payments SDK](https://github.com/paypoint/mobilesdk-android) into your app.
+Demonstrates how to integrate the [PayPoint Advanced Payments SDK](https://github.com/pay360/mobilesdk-android) into your app.
 
 ## Quickstart
 
@@ -16,7 +16,7 @@ That's it! You should now be able to run up the demo app and make test payments.
 
 A set of test cards for MITE (Merchant Integration Test Environment) are available here: [MITE test cards](https://developer.paypoint.com/payments/docs/#getting_started/test_cards)
 
-Payments made through the demo app can be tracked in our MITE [Portal](https://portal.mite.paypoint.net:3443/portal-client/#/en_gb/log_in)
+Payments made through the demo app can be tracked in our MITE [Portal](https://portal.mite.pay360.com/ngportal/#/login)
 
-See [SDK repository](https://github.com/paypoint/mobilesdk-android) for more detailed usage instructions.
+See [SDK repository](https://github.com/pay360/mobilesdk-android) for more detailed usage instructions.
 
