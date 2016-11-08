@@ -92,7 +92,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         });
 
         // read url from build first, fallback to local config
-        String serverUrl = "http://10.113.62.75:5000";
+        String serverUrl = getString(R.string.build_url_server);
 
         if (TextUtils.isEmpty(serverUrl)) {
             serverUrl = EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE);
@@ -105,7 +105,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         tokenManager = new MerchantTokenManager();
 
         // read url from build first, fallback to local config
-        merchantUrl = "http://10.113.62.75:5000/merchant";
+        merchantUrl = getString(R.string.build_url_merchant);
 
         if (TextUtils.isEmpty(merchantUrl)) {
             merchantUrl = getString(R.string.url_merchant);
