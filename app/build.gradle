@@ -76,10 +76,10 @@ dependencies {
             compile 'com.netflix.rxjava:rxjava-android:0.20.7'
         } else if (project.property('devEnv').equals('ci')) {
             // for ci builds use the most recent version of the SDK
-            compile 'net.paypoint:mobilesdk-android:+'
+            compile 'com.pay360:mobilesdk-android:+'
         }
     } else {
         // point to a specified version of the SDK - this is what apps using the SDK should do
-        compile 'net.paypoint:mobilesdk-android:1.0.0'
+        compile 'com.pay360:mobilesdk-android:2.0.0'
     }
 }
