@@ -12,6 +12,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pay360.sdk.demo.R;
+
 public class CustomWaitDialog extends DialogFragment {
 
     private static final String ARG_MESSAGE = "com.pay360.sdk.demo.widget.ARG_MESSAGE";
@@ -28,18 +30,18 @@ public class CustomWaitDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog d = new Dialog(getActivity(), com.pay360.sdk.demo.R.style.dialog);
+        Dialog d = new Dialog(getActivity(), R.style.dialog);
 
         d.setCanceledOnTouchOutside(false);
         setCancelable(false);
 
-        d.setContentView(com.pay360.sdk.demo.R.layout.custom_progress_dialog);
+        d.setContentView(R.layout.custom_progress_dialog);
 
-        TextView titleView = (TextView)d.findViewById(com.pay360.sdk.demo.R.id.textMessage);
+        TextView titleView = (TextView)d.findViewById(R.id.textMessage);
 
-        Animation waitAnimation = AnimationUtils.loadAnimation(this.getActivity(), com.pay360.sdk.demo.R.anim.pulse);
+        Animation waitAnimation = AnimationUtils.loadAnimation(this.getActivity(), R.anim.pulse);
 
-        ImageView imageLogo = (ImageView)d.findViewById(com.pay360.sdk.demo.R.id.imageLogo);
+        ImageView imageLogo = (ImageView)d.findViewById(R.id.imageLogo);
 
         imageLogo.startAnimation(waitAnimation);
 

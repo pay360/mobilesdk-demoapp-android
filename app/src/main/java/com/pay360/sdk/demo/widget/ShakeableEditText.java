@@ -12,6 +12,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
+import com.pay360.sdk.demo.R;
+
 public class ShakeableEditText extends EditText {
 
     private String error;
@@ -58,7 +60,7 @@ public class ShakeableEditText extends EditText {
      * Shake the edit text
      */
     private void shake() {
-        int delta = getResources().getDimensionPixelOffset(com.pay360.sdk.demo.R.dimen.shake_spacing);
+        int delta = getResources().getDimensionPixelOffset(R.dimen.shake_spacing);
 
         PropertyValuesHolder pvhTranslateX = PropertyValuesHolder.ofKeyframe(View.TRANSLATION_X,
                 Keyframe.ofFloat(0f, 0),

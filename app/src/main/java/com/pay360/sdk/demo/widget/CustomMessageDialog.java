@@ -11,13 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.pay360.sdk.demo.R;
 import com.pay360.sdk.demo.PaymentActivity;
 
 public class CustomMessageDialog extends DialogFragment {
 
-    private static final String ARG_TITLE = "CustomMessageDialog.ARG_TITLE";
-    private static final String ARG_MESSAGE = "CustomMessageDialog.ARG_MESSAGE";
-    private static final String ARG_CHECK_STATUS = "CustomMessageDialog.ARG_CHECK_STATUS";
+    private static final String ARG_TITLE = "com.pay360.sdk.demo.widget.CustomMessageDialog.ARG_TITLE";
+    private static final String ARG_MESSAGE = "com.pay360.sdk.demo.widget.CustomMessageDialog.ARG_MESSAGE";
+    private static final String ARG_CHECK_STATUS = "com.pay360.sdk.demo.widget.CustomMessageDialog.ARG_CHECK_STATUS";
 
     public static CustomMessageDialog newInstance(String title, String message, boolean retry) {
         Bundle args = new Bundle();
@@ -33,19 +34,19 @@ public class CustomMessageDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Dialog d = new Dialog(getActivity(), com.pay360.sdk.demo.R.style.dialog);
+        final Dialog d = new Dialog(getActivity(), R.style.dialog);
 
-        d.setContentView(com.pay360.sdk.demo.R.layout.custom_message_dialog);
+        d.setContentView(R.layout.custom_message_dialog);
 
-        TextView titleView = (TextView)d.findViewById(com.pay360.sdk.demo.R.id.textTitle);
+        TextView titleView = (TextView)d.findViewById(R.id.textTitle);
 
         titleView.setText(getArguments().getString(ARG_TITLE));
 
-        TextView messageView = (TextView) d.findViewById(com.pay360.sdk.demo.R.id.textMessage);
+        TextView messageView = (TextView) d.findViewById(R.id.textMessage);
 
         messageView.setText(getArguments().getString(ARG_MESSAGE));
 
-        Button closeButton = (Button) d.findViewById(com.pay360.sdk.demo.R.id.buttonClose);
+        Button closeButton = (Button) d.findViewById(R.id.buttonClose);
 
         closeButton.setOnClickListener(new View.OnClickListener() {
 
@@ -56,7 +57,7 @@ public class CustomMessageDialog extends DialogFragment {
 
         });
 
-        Button checkStatusButton = (Button) d.findViewById(com.pay360.sdk.demo.R.id.buttonCheckStatus);
+        Button checkStatusButton = (Button) d.findViewById(R.id.buttonCheckStatus);
 
         if (getArguments().getBoolean(ARG_CHECK_STATUS, false)) {
             checkStatusButton.setVisibility(View.VISIBLE);
