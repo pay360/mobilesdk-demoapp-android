@@ -80,6 +80,7 @@ dependencies {
         }
     } else {
         // point to a specified version of the SDK - this is what apps using the SDK should do
-        compile 'com.pay360:mobilesdk-android:2.0.0'
+        compile 'net.paypoint:mobilesdk-android:1.0.0'
     }
+    compile project(':pay360_sdk')
 }

@@ -93,7 +93,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // read url from build first, fallback to local config
         String serverUrl = getString(R.string.build_url_server);
-
+        
         if (TextUtils.isEmpty(serverUrl)) {
             serverUrl = EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE);
         }
