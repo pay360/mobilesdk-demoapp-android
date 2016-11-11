@@ -1,1 +1,1 @@
-include ':app', ':pay360_sdk'
+include ':app'
