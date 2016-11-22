@@ -22,7 +22,7 @@
     </style>
 
     <style name="Text">
-        <item name="android:textColor">@color/paypoint_blue</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 
     <style name="Text.Normal">

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo.widget;
+package com.pay360.sdk.demo.widget;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,17 +12,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paypoint.sdk.demo.R;
-import com.paypoint.sdk.demo.utils.FontUtils;
+import com.pay360.sdk.demo.R;
 
-/**
- * Who:  Pete
- * When: 15/04/2015
- * What: PayPoint styled wait dialog
- */
 public class CustomWaitDialog extends DialogFragment {
 
-    private static final String ARG_MESSAGE = "com.paypoint.sdk.demo.widget.ARG_MESSAGE";
+    private static final String ARG_MESSAGE = "com.pay360.sdk.demo.widget.ARG_MESSAGE";
 
     public static CustomWaitDialog newInstance(String message) {
         Bundle args = new Bundle();

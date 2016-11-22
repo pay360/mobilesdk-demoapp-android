@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity"
+    tools:context="com.pay360.sdk.demo.SplashActivity"
     android:background="@android:color/white">
 
     <include android:layout_width="match_parent"
         android:layout_height="wrap_content" layout="@layout/toolbar" android:layout_alignParentTop="true"/>
 
-    <LinearLayout android:id="@+id/containerPayPoint"
+    <LinearLayout android:id="@+id/container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -19,21 +19,10 @@
         android:visibility="invisible">
 
         <ImageView android:id="@+id/imageLogo"
-            android:layout_width="100dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/_paypoint_logo"
+            android:src="@drawable/_pay360_logo_text"
             android:adjustViewBounds="true"/>
-
-        <TextView
-            android:id="@+id/labelPayPoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="32sp"
-            android:textColor="@color/paypoint_blue"
-            android:text="@string/splash_paypoint"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 

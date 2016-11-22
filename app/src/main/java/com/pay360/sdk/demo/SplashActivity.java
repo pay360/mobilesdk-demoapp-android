@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo;
+package com.pay360.sdk.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.TextView;
 
-import com.paypoint.sdk.demo.utils.FontUtils;
-
-/**
- * Who:  Pete
- * When: 17/04/2015
- * What:
- */
 public class SplashActivity extends ActionBarActivity {
 
     private Button buttonStart;
@@ -44,13 +36,13 @@ public class SplashActivity extends ActionBarActivity {
             }
         });
 
-        final ViewGroup containerPayPoint = (ViewGroup) findViewById(R.id.containerPayPoint);
+        final ViewGroup container = (ViewGroup) findViewById(R.id.container);
         Animation fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
 
         fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                containerPayPoint.setVisibility(View.VISIBLE);
+                container.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -64,6 +56,6 @@ public class SplashActivity extends ActionBarActivity {
             }
         });
 
-        containerPayPoint.startAnimation(fadeInAnimation);
+        container.startAnimation(fadeInAnimation);
     }
 }

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo.utils;
+package com.pay360.sdk.demo.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;

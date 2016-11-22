@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo.widget;
+package com.pay360.sdk.demo.widget;
 
 import android.content.Context;
 import android.text.InputFilter;

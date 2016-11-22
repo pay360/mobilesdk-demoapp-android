@@ -1,43 +1,38 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo;
+package com.pay360.sdk.demo;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.paypoint.sdk.demo.merchant.MerchantTokenManager;
-import com.paypoint.sdk.demo.utils.FontUtils;
-import com.paypoint.sdk.demo.widget.CustomMessageDialog;
-import com.paypoint.sdk.demo.widget.CustomWaitDialog;
-import com.paypoint.sdk.demo.widget.ShakeableEditText;
-import com.paypoint.sdk.library.exception.InvalidCredentialsException;
-import com.paypoint.sdk.library.exception.PaymentValidationException;
-import com.paypoint.sdk.library.exception.TransactionInProgressException;
-import com.paypoint.sdk.library.exception.TransactionSuspendedFor3DSException;
-import com.paypoint.sdk.library.network.EndpointManager;
-import com.paypoint.sdk.library.payment.BillingAddress;
-import com.paypoint.sdk.library.payment.CustomField;
-import com.paypoint.sdk.library.payment.PaymentError;
-import com.paypoint.sdk.library.payment.PaymentManager;
-import com.paypoint.sdk.library.payment.PaymentRequest;
-import com.paypoint.sdk.library.payment.PaymentSuccess;
-import com.paypoint.sdk.library.payment.PaymentCard;
-import com.paypoint.sdk.library.payment.Transaction;
-import com.paypoint.sdk.library.security.PayPointCredentials;
+import com.pay360.sdk.demo.merchant.MerchantTokenManager;
+import com.pay360.sdk.demo.widget.CustomMessageDialog;
+import com.pay360.sdk.demo.widget.CustomWaitDialog;
+import com.pay360.sdk.demo.widget.ShakeableEditText;
+import com.pay360.sdk.library.exception.InvalidCredentialsException;
+import com.pay360.sdk.library.exception.PaymentValidationException;
+import com.pay360.sdk.library.exception.TransactionInProgressException;
+import com.pay360.sdk.library.exception.TransactionSuspendedFor3DSException;
+import com.pay360.sdk.library.network.EndpointManager;
+import com.pay360.sdk.library.payment.BillingAddress;
+import com.pay360.sdk.library.payment.PaymentError;
+import com.pay360.sdk.library.payment.PaymentManager;
+import com.pay360.sdk.library.payment.PaymentRequest;
+import com.pay360.sdk.library.payment.PaymentSuccess;
+import com.pay360.sdk.library.payment.PaymentCard;
+import com.pay360.sdk.library.payment.Transaction;
+import com.pay360.sdk.library.security.Credentials;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.UUID;
 
 import retrofit.RetrofitError;
@@ -98,7 +93,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
 
         // read url from build first, fallback to local config
         String serverUrl = getString(R.string.build_url_server);
-
+        
         if (TextUtils.isEmpty(serverUrl)) {
             serverUrl = EndpointManager.getEndpointUrl(EndpointManager.Environment.MITE);
         }
@@ -314,8 +309,8 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     @Override
     public void getTokenSucceeded(String token) {
 
-        // create the PayPoint credentials to use for the request
-        PayPointCredentials credentials = new PayPointCredentials()
+        // create the credentials to use for the request
+        Credentials credentials = new Credentials()
                 .setInstallationId(installationId)
                 .setToken(token);
 
@@ -349,7 +344,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     }
 
     /**
-     * Callback from PayPoint SDK for payment succeeded
+     * Callback from SDK for payment succeeded
      * @param paymentSuccess
      */
     @Override
@@ -365,7 +360,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     }
 
     /**
-     * Callback from PayPoint SDK for payment failed
+     * Callback from SDK for payment failed
      * @param paymentError
      */
     @Override
@@ -378,7 +373,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
         if (paymentError != null) {
             // paymentError.getReasonMessage() should be used for debugging only
 
-            // PayPointError also provides an error enum
+            // PaymentError also provides an error enum
             PaymentError.ReasonCode reasonCode = paymentError.getReasonCode();
 
             // if isSafeToRetryPayment() returns true then payment has not been taken
@@ -470,7 +465,7 @@ public class PaymentActivity extends ActionBarActivity implements PaymentManager
     }
 
     private void onPaymentStarted() {
-        // show a wait dialog - this is just a PayPoint branded example!
+        // show a wait dialog - this is just a Pay360 branded example!
         CustomWaitDialog waitDialog = CustomWaitDialog.newInstance("Processing...");
         waitDialog.show(getFragmentManager(), "WAIT_DIALOG");
     }

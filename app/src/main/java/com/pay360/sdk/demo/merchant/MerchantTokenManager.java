@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo.merchant;
+package com.pay360.sdk.demo.merchant;
 
 import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
-import com.paypoint.sdk.library.log.Logger;
+import com.pay360.sdk.library.log.Logger;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -18,7 +18,7 @@ import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
- * Handles reading of PayPoint merchant token - when integrating this will be the responsibility
+ * Handles reading of Pay360 merchant token - when integrating this will be the responsibility
  * of the merchant to implement this REST call to their own server
  * Who:  Pete
  * When: 20/04/2015

@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo.widget;
+package com.pay360.sdk.demo.widget;
 
 import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
@@ -12,13 +12,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.paypoint.sdk.demo.R;
+import com.pay360.sdk.demo.R;
 
-/**
- * Who:  Pete
- * When: 22/04/2015
- * What:
- */
 public class ShakeableEditText extends EditText {
 
     private String error;

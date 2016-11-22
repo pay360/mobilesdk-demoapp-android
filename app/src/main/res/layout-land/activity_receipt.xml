@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReceiptActivity"
+    tools:context="com.pay360.sdk.demo.ReceiptActivity"
     android:background="@android:color/white">
 
    <include android:layout_width="match_parent"
@@ -22,7 +22,7 @@
            android:layout_height="wrap_content"
            android:textSize="70sp"
            android:layout_gravity="center_horizontal"
-           android:textColor="@color/paypoint_yellow"
+           android:textColor="@color/yellow"
            android:layout_marginTop="20dp"
            android:layout_marginBottom="20dp"
            android:visibility="invisible"/>

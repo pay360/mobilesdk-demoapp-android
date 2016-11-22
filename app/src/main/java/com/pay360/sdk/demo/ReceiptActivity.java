@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2015. PayPoint
+ * Copyright (c) 2016 Capita plc
  */
 
-package com.paypoint.sdk.demo;
+package com.pay360.sdk.demo;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,17 +15,12 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
-import com.paypoint.sdk.demo.utils.FontUtils;
-import com.paypoint.sdk.library.payment.PaymentSuccess;
+import com.pay360.sdk.demo.utils.FontUtils;
+import com.pay360.sdk.library.payment.PaymentSuccess;
 
-/**
- * Who:  Pete
- * When: 17/04/2015
- * What: Activity for display payment receipt
- */
 public class ReceiptActivity extends ActionBarActivity {
 
-    public static final String EXTRA_RECEIPT = "com.paypoint.sdk.demo.EXTRA_RECEIPT";
+    public static final String EXTRA_RECEIPT = "com.pay360.sdk.demo.EXTRA_RECEIPT";
     private static final int ANIMATION_DELAY = 1000;
 
     private TextView textTick;

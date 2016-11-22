@@ -19,11 +19,11 @@ allprojects {
         if (project.hasProperty('devEnv')) {
             if (project.property('devEnv').equals('ci')) {
                 // pull ci build down from local nexus
-                maven { url 'http://192.168.6.244:8080/nexus/content/repositories/blue-snapshots' }
+                maven { url 'http://192.168.6.244/nexus/content/repositories/blue-snapshots' }
             }
         } else {
             // this is the public URL for pulling in the library
-            maven { url 'https://github.com/paypoint/maven-repo/raw/master' }
+            maven { url 'https://github.com/pay360/maven-repo/raw/master' }
         }
     }
 }

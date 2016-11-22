@@ -1,4 +1,4 @@
-package com.paypoint.sdk.demo;
+package com.pay360.sdk.demo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
