@@ -1,3 +1,5 @@
+## *Please note that the mobile SDK is no longer maintained or supported*
+
 # Pay360 Advanced Payments SDK Demo
 
 Demonstrates how to integrate the [Pay360 Advanced Payments SDK](https://github.com/pay360/mobilesdk-android) into your app.
